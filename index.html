@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>html & css — fruti's guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green: #04aa6d;
+    --green-light: #d9ead3;
+    --blue: #2196f3;
+    --purple: #9c27b0;
+    --orange: #ff9800;
+    --red: #f44336;
+    --bg: #ffffff;
+    --surface: #f1f1f1;
+    --border: #dddddd;
+    --text: #333333;
+    --dim: #555555;
+    --code-bg: #f8f8f8;
+    --sidebar: #282a35;
+  }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', Arial, sans-serif; font-size: 15px; line-height: 1.75; margin: 0; }
+  .layout { display: flex; min-height: 100vh; }
+
+  /* SIDEBAR */
+  .sidebar { width: 220px; background: var(--sidebar); flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  .sidebar-logo { padding: 20px 16px; font-family: 'Share Tech Mono', monospace; font-size: 13px; color: #fff; border-bottom: 1px solid #3a3c4a; letter-spacing: 0.05em; }
+  .sidebar-logo span { color: var(--green); }
+  .sidebar a { display: block; padding: 8px 16px; font-size: 13px; color: #ccc; text-decoration: none; border-left: 3px solid transparent; transition: all 0.15s; }
+  .sidebar a:hover { background: #3a3c4a; color: #fff; border-left-color: var(--green); }
+  .sidebar-section { padding: 10px 16px 4px; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #666; margin-top: 8px; }
+
+  /* MAIN */
+  .main { flex: 1; max-width: 900px; padding: 40px 48px 100px; }
+
+  /* TOP */
+  .top { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 2px solid var(--green); }
+  .top h1 { font-size: 36px; font-weight: 700; color: #282a35; margin-bottom: 8px; }
+  .top h1 span { color: var(--green); }
+  .top p { color: #555; font-size: 14px; }
+  .workflow-box { background: #e8f5e9; border-left: 4px solid var(--green); padding: 16px 20px; margin-top: 20px; font-size: 14px; color: #2e7d32; line-height: 1.8; }
+  .workflow-box strong { color: #1b5e20; display: block; margin-bottom: 4px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* PHASE HEADERS */
+  .phase-header { background: var(--sidebar); color: #fff; padding: 10px 20px; font-size: 13px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin: 48px 0 24px; display: inline-block; }
+  .phase-header.css { background: var(--blue); }
+  .phase-header.deep { background: var(--purple); }
+
+  /* CHAPTERS */
+  .chapter { margin-bottom: 48px; }
+  .chapter-title { font-size: 22px; font-weight: 700; color: #282a35; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .ch-num { font-size: 13px; color: #999; font-weight: 400; font-family: monospace; }
+
+  /* TEXT */
+  p { color: var(--text); margin-bottom: 14px; }
+  strong { color: #000; }
+  .accent { color: var(--purple); }
+
+  /* CODE BLOCKS */
+  .code-block { background: var(--sidebar); color: #f8f8f2; padding: 20px 24px; margin: 16px 0; overflow-x: auto; font-size: 13px; line-height: 1.9; white-space: pre; font-family: 'Courier New', monospace; border-radius: 4px; }
+  .code-block.green-border { border-left: 4px solid var(--green); }
+  .code-block.blue-border { border-left: 4px solid var(--blue); }
+  .code-block.purple-border { border-left: 4px solid var(--purple); }
+  .code-block.orange-border { border-left: 4px solid var(--orange); }
+  .code-block.pink-border { border-left: 4px solid #e91e63; }
+  .code-block.cyan-border { border-left: 4px solid #00bcd4; }
+  .code-block.yellow-border { border-left: 4px solid var(--orange); }
+
+  /* NOTES */
+  .note { padding: 14px 18px; margin: 16px 0; font-size: 14px; line-height: 1.7; border-radius: 2px; }
+  .note { background: #e3f2fd; border-left: 4px solid var(--blue); color: #0d47a1; }
+  .note.green { background: #e8f5e9; border-left-color: var(--green); color: #2e7d32; }
+  .note.purple { background: #f3e5f5; border-left-color: var(--purple); color: #4a148c; }
+  .note.orange { background: #fff3e0; border-left-color: var(--orange); color: #e65100; }
+  .note.red { background: #ffebee; border-left-color: var(--red); color: #b71c1c; }
+  .note.pink { background: #fce4ec; border-left-color: #e91e63; color: #880e4f; }
+  .note-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; display: block; margin-bottom: 6px; font-weight: 700; opacity: 0.7; }
+
+  /* DEMO */
+  .demo { background: var(--surface); border: 1px solid var(--border); padding: 20px; margin: 16px 0; border-radius: 2px; }
+  .demo-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #999; margin-bottom: 10px; display: block; }
+
+  code { background: var(--code-bg); border: 1px solid var(--border); padding: 2px 6px; font-family: 'Courier New', monospace; font-size: 13px; color: #c0392b; border-radius: 2px; }
+  .rule { border: none; border-top: 2px solid var(--border); margin: 40px 0; }
+
+  /* TABLES */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  th { background: var(--sidebar); color: #fff; padding: 10px 14px; text-align: left; font-size: 13px; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--surface); }
+  td:first-child { color: var(--sidebar); font-family: monospace; font-size: 13px; white-space: nowrap; font-weight: 700; }
+  td:last-child { color: #555; }
+
+  /* TAG DEMO */
+  .tag-demo { display: flex; flex-direction: column; gap: 0; margin: 16px 0; border: 1px solid var(--border); }
+  .tag-row { display: flex; align-items: flex-start; gap: 0; border-bottom: 1px solid var(--border); }
+  .tag-row:last-child { border-bottom: none; }
+  .tag-name { color: #c0392b; font-size: 13px; min-width: 160px; padding: 10px 14px; background: var(--surface); font-family: monospace; font-weight: 700; flex-shrink: 0; border-right: 1px solid var(--border); }
+  .tag-desc { color: #555; font-size: 13px; padding: 10px 14px; line-height: 1.6; }
+
+  /* SELECTORS */
+  .sel-example { margin: 6px 0; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .sel-example:last-child { border-bottom: none; }
+  .sel-example .sel { color: #c0392b; font-family: monospace; font-size: 13px; font-weight: 700; }
+  .sel-example .meaning { color: #555; font-size: 13px; padding-left: 16px; }
+
+  /* BOX MODEL */
+  .box-model { display: flex; flex-direction: column; align-items: center; margin: 20px auto; width: fit-content; }
+  .bm-margin { background: #fff9c4; border: 2px dashed #f9a825; padding: 20px; }
+  .bm-border { background: #ffccbc; border: 4px solid #bf360c; padding: 16px; }
+  .bm-padding { background: #c8e6c9; border: 2px dashed #2e7d32; padding: 16px; }
+  .bm-content { background: #bbdefb; border: 2px solid #0d47a1; padding: 12px 24px; text-align: center; color: #0d47a1; font-size: 13px; font-weight: 700; }
+
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { padding: 24px 20px 80px; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <div class="sidebar">
+    <div class="sidebar-logo">html &amp; <span>css</span><br>for fruti ♡</div>
+    <a href="fruti-tutor.html" style="display:block;margin:12px 16px;padding:10px;background:#04aa6d;color:#fff;text-align:center;text-decoration:none;font-weight:700;font-size:13px;border-radius:2px;">✏️ Open Practice Mode</a>
+    <div class="sidebar-section">Phase 1 — HTML</div>
+    <a href="#ch1">01 — The Skeleton</a>
+    <a href="#ch2">02 — Tags</a>
+    <a href="#ch3">03 — Attributes</a>
+    <a href="#ch4">04 — Structure</a>
+    <a href="#ch5">05 — Forms</a>
+    <div class="sidebar-section">Phase 2 — CSS</div>
+    <a href="#ch6">06 — How CSS Works</a>
+    <a href="#ch7">07 — Variables</a>
+    <a href="#ch8">08 — Properties</a>
+    <a href="#ch9">09 — Box Model</a>
+    <a href="#ch10">10 — Flex &amp; Grid</a>
+    <a href="#ch11">11 — Positioning</a>
+    <a href="#ch12">12 — Pseudo Elements</a>
+    <a href="#ch13">13 — Quick Reference</a>
+    <div class="sidebar-section">Phase 3 — Deeper</div>
+    <a href="#ch14">14 — Units</a>
+    <a href="#ch15">15 — Colors</a>
+    <a href="#ch16">16 — Transitions</a>
+    <a href="#ch17">17 — Media Queries</a>
+    <a href="#ch18">18 — DevTools</a>
+    <a href="#ch19">19 — Mistakes</a>
+    <a href="#ch20">20 — Gradients</a>
+    <a href="#ch21">21 — Specificity</a>
+    <a href="#ch22">22 — Transform</a>
+    <a href="#ch23">23 — Filter</a>
+    <a href="#ch24">24 — details Toggle</a>
+    <a href="#ch25">25 — Overflow</a>
+    <a href="#ch26">26 — Selectors</a>
+    <a href="#ch27">27 — Fonts</a>
+    <a href="#ch28">28 — The Real Stuff</a>
+  </div>
+
+  <div class="main">
+
+  <div class="top">
+    <h1>HTML &amp; <span>CSS</span> for fruti</h1>
+    <p>a real guide. written like i'm talking to u. no fluff. ♡</p>
+    <div class="workflow-box">
+      <strong>the workflow — burn this in</strong>
+      step 1: write ALL your HTML first. structure only. no styling.<br>
+      step 2: it will look ugly. that's correct. don't panic.<br>
+      step 3: THEN open your &lt;style&gt; tag and add CSS.<br>
+      this guide follows that exact order — HTML fully covered before CSS starts.
+    </div>
+  </div>
+
+
+  <div class="phase-header html">// phase one — html</div>
+
+
+  <div class="chapter" id="ch1">
+    <div class="chapter-title"><span class="ch-num">01</span> The Skeleton — Always This Order</div>
+
+    <p>Every HTML file has the same bones. Always. Memorize this structure before anything else because everything else builds on top of it.</p>
+
+    <div class="code-block">
+&lt;!DOCTYPE html&gt;           <span style="color:#888">← not a tag. just tells browser: this is HTML5.</span>
+&lt;html lang="en"&gt;           <span style="color:#888">← root element. everything lives inside this.</span>
+
+  &lt;head&gt;                    <span style="color:#888">← invisible settings area. nothing here shows on page.</span>
+    &lt;meta charset="UTF-8"&gt;  <span style="color:#888">← enables emojis and special characters. always include.</span>
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+                              <span style="color:#888">← makes page look right on phones. always include.</span>
+    &lt;title&gt;page title&lt;/title&gt; <span style="color:#888">← text in the browser tab.</span>
+    &lt;link href="fonts url" rel="stylesheet"&gt;  <span style="color:#888">← google fonts goes here.</span>
+    &lt;style&gt;
+      /* ALL your CSS goes in here */
+      /* but write your HTML first before touching this */
+    &lt;/style&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;                    <span style="color:#888">← everything VISIBLE goes here. this is where you work.</span>
+
+    &lt;!-- your html structure --&gt;
+
+    &lt;script&gt;               <span style="color:#888">← JavaScript. ALWAYS last, right before &lt;/body&gt;.</span>
+    &lt;/script&gt;
+
+  &lt;/body&gt;
+
+&lt;/html&gt;</div>
+
+    <div class="note green">
+      <span class="note-label">why script goes last</span>
+      JS often needs to find HTML elements to do things to them.
+      if JS runs before the HTML is loaded, it finds nothing and breaks.
+      putting it last means everything is already there when JS runs.
+    </div>
+
+    <div class="note purple">
+      <span class="note-label">comments in HTML vs CSS</span>
+      HTML comment: &lt;!-- this is a comment --&gt;<br>
+      CSS comment: /* this is a comment */<br><br>
+      they're different. using CSS comment syntax in HTML = broken. don't mix them.
+    </div>
+  </div>
+
+
+  <div class="chapter" id="ch2">
+    <div class="chapter-title"><span class="ch-num">02</span> Tags — What They Are & What They Mean</div>
+
+    <p>Tags label what something IS. Most come in pairs — opening and closing. The closing one has a <code>/</code> before the name.</p>
+
+    <div class="code-block">
+&lt;div&gt;content here&lt;/div&gt;          <span style="color:#888">← has content inside. needs closing tag.</span>
+&lt;p&gt;a paragraph&lt;/p&gt;
+&lt;h1&gt;big heading&lt;/h1&gt;
+
+&lt;input&gt;                            <span style="color:#888">← self-closing. no content inside. no closing tag.</span>
+&lt;img src="photo.png" alt="desc"&gt;
+&lt;br&gt;</div>
+
+    <p>Every tag you'll actually use:</p>
+
+    <div class="tag-demo">
+      <div class="tag-row"><span class="tag-name">&lt;div&gt;</span><span class="tag-desc">a generic box. no visual meaning on its own. just groups things so you can style them together. use for most containers.</span></div>
+      <div class="tag-row"><span class="tag-name">&lt;span&gt;</span><span class="tag-desc">like a div but INLINE — wraps words inside a sentence without breaking to a new line. use for styling one word or phrase differently.</span></div>
+      <div class="tag-row"><span class="tag-name">&lt;p&gt;</span><span class="tag-desc">a paragraph. adds spacing above and below automatically. use for blocks of readable text.</span></div>
+      <div class="tag-row"><span class="tag-name">&lt;h1&gt; — &lt;h6&gt;</span><span class="tag-desc">headings. h1 = biggest. h6 = smallest. use for page titles and section headers. only one h1 per page.</span></div>
+      <div class="tag-row"><span class="tag-name">&lt;a&gt;</span><span class="tag-desc">a link. needs href="" to work. &lt;a href="https://chub.ai"&gt;click&lt;/a&gt;</span></div>
+      <div class="tag-row"><span class="tag-name">&lt;ul&gt; + &lt;li&gt;</span><span class="tag-desc">unordered list. ul = the whole list. li = each item inside it. &lt;ol&gt; = same but numbered.</span></div>
+      <div class="tag-row"><span class="tag-name">&lt;nav&gt;</span><span class="tag-desc">navigation bar. works like a div but signals "this is a nav." good practice to use it.</span></div>
+      <div class="tag-row"><span class="tag-name">&lt;form&gt;</span><span class="tag-desc">container for input fields. handles submission. give it id="" so JS can find it.</span></div>
+      <div class="tag-row"><span class="tag-name">&lt;input&gt;</span><span class="tag-desc">single-line text box. self-closing. needs type="" and name="" (name must match database column).</span></div>
+      <div class="tag-row"><span class="tag-name">&lt;textarea&gt;</span><span class="tag-desc">multi-line text box. has open and close tags. user can resize it vertically.</span></div>
+      <div class="tag-row"><span class="tag-name">&lt;select&gt;</span><span class="tag-desc">dropdown menu. each choice is an &lt;option&gt; inside it.</span></div>
+      <div class="tag-row"><span class="tag-name">&lt;button&gt;</span><span class="tag-desc">clickable button. use type="submit" inside a form to make it submit.</span></div>
+      <div class="tag-row"><span class="tag-name">&lt;img&gt;</span><span class="tag-desc">image. self-closing. src="" = url or file path. alt="" = description for screen readers.</span></div>
+      <div class="tag-row"><span class="tag-name">&lt;footer&gt;</span><span class="tag-desc">the bottom of the page. works like div but signals "this is a footer."</span></div>
+    </div>
+
+    <div class="note">
+      <span class="note-label">div vs span — the one thing to actually memorize</span>
+      div = BLOCK. takes up full width. starts on its own line.<br>
+      span = INLINE. stays inside the text flow. no line break.<br><br>
+      use div for containers and sections.<br>
+      use span when you want to style a word inside a sentence.
+    </div>
+
+    <p>Span example:</p>
+    <div class="code-block">
+&lt;p&gt;I make &lt;span class="highlight"&gt;dark content&lt;/span&gt; for adults.&lt;/p&gt;</div>
+    <div class="demo">
+      <span class="demo-label">result once CSS is added</span>
+      <p style="font-family:sans-serif;color:#d0d0d0;">I make <span style="color:#e82fdc">dark content</span> for adults.</p>
+    </div>
+    <p>Only "dark content" gets the color. The rest is untouched. The line doesn't break.</p>
+  </div>
+
+
+  <div class="chapter" id="ch3">
+    <div class="chapter-title"><span class="ch-num">03</span> Attributes — The Extra Info Inside Tags</div>
+
+    <p>Attributes go INSIDE the opening tag and give extra information. Format is always <code>name="value"</code>.</p>
+
+    <div class="code-block cyan-border">
+&lt;div <span style="color:#00e5cc">class="hero"</span>&gt;
+<span style="color:#888">↑ class = how CSS targets this element. CSS uses dot: .hero { }</span>
+
+&lt;div <span style="color:#00e5cc">id="s-rules"</span>&gt;
+<span style="color:#888">↑ id = unique name. one per page. CSS uses hash: #s-rules { }
+  also used for nav anchor links: href="#s-rules"</span>
+
+&lt;a <span style="color:#00e5cc">href="https://chub.ai"</span>&gt;visit chub&lt;/a&gt;
+<span style="color:#888">↑ href = where the link goes</span>
+
+&lt;img <span style="color:#00e5cc">src="photo.png" alt="my photo"</span>&gt;
+<span style="color:#888">↑ src = file or url. alt = description.</span>
+
+&lt;input <span style="color:#00e5cc">type="text" name="requester_name" required</span>&gt;
+<span style="color:#888">↑ type = kind of input. name = database column name. required = must fill before submit.</span></div>
+
+    <div class="note purple">
+      <span class="note-label">class vs id</span>
+      class = reusable. many elements can share the same class.<br>
+      id = unique. only one element per page should have each id.<br><br>
+      multiple classes: class="tag accent" — space separated in HTML, chained in CSS: .tag.accent { }<br>
+      anchor link: href="#s-rules" scrolls to id="s-rules". they must match exactly.
+    </div>
+  </div>
+
+
+  <div class="chapter" id="ch4">
+    <div class="chapter-title"><span class="ch-num">04</span> Structure & Nesting</div>
+
+    <p>HTML is nested — elements live INSIDE other elements. Like folders inside folders. Indentation shows what's inside what.</p>
+
+    <div class="code-block">
+&lt;div class="wrapper"&gt;            <span style="color:#888">← outer box</span>
+
+  &lt;div class="section"&gt;          <span style="color:#888">← inside wrapper</span>
+
+    &lt;h2&gt;Title&lt;/h2&gt;              <span style="color:#888">← inside section</span>
+    &lt;p&gt;Text here.&lt;/p&gt;          <span style="color:#888">← inside section</span>
+
+    &lt;ul&gt;                          <span style="color:#888">← list inside section</span>
+      &lt;li&gt;item one&lt;/li&gt;         <span style="color:#888">← item inside list</span>
+      &lt;li&gt;item two&lt;/li&gt;
+    &lt;/ul&gt;
+
+  &lt;/div&gt;                          <span style="color:#888">← closes section</span>
+
+&lt;/div&gt;                            <span style="color:#888">← closes wrapper</span></div>
+
+    <div class="note red">
+      <span class="note-label">the golden rule — never break this</span>
+      open and close in the right order.<br><br>
+      ✓ &lt;div&gt;&lt;p&gt;text&lt;/p&gt;&lt;/div&gt;  — p opens and closes before div closes<br>
+      ✗ &lt;div&gt;&lt;p&gt;text&lt;/div&gt;&lt;/p&gt;  — closing order is wrong<br><br>
+      wrong nesting = layout breaks in silent, confusing ways.
+    </div>
+
+    <p>Think in boxes BEFORE writing code. Draw it out:</p>
+    <div class="code-block green-border">
+page
+├── nav bar
+├── hero section
+│   ├── heading
+│   ├── subtext
+│   └── tags row
+└── main wrapper
+    ├── section A — what i make
+    │   ├── title row (A. + "What I Make")
+    │   └── two column grid
+    │       ├── yes box → list items
+    │       └── no box → list items
+    ├── section B — rules
+    │   ├── title row
+    │   └── numbered list
+    ├── section C — form
+    └── section D — queue</div>
+
+    <p>Build the two-column layout in HTML first (it'll look ugly — that's fine):</p>
+    <div class="code-block">
+&lt;div class="yn-grid"&gt;
+
+  &lt;div class="yn-box yes"&gt;
+    &lt;div class="yn-title"&gt;✓ Will Do&lt;/div&gt;
+    &lt;ul class="yn-list"&gt;
+      &lt;li&gt;Original characters&lt;/li&gt;
+      &lt;li&gt;Dark / taboo dynamics&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+
+  &lt;div class="yn-box no"&gt;
+    &lt;div class="yn-title"&gt;✗ Won't Do&lt;/div&gt;
+    &lt;ul class="yn-list"&gt;
+      &lt;li&gt;Minors in any context&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+<span style="color:#888">↑ write this, save it, look at it ugly, then move to CSS to fix it.</span></div>
+  </div>
+
+
+  <div class="chapter" id="ch5">
+    <div class="chapter-title"><span class="ch-num">05</span> Forms — All The Pieces</div>
+
+    <div class="code-block pink-border">
+&lt;form id="req-form"&gt;               <span style="color:#888">← id so JS can find it. don't change unless u update JS too.</span>
+
+  &lt;div class="form-group"&gt;         <span style="color:#888">← wrapper for one field + its label</span>
+    &lt;label&gt;Your username&lt;/label&gt;
+    &lt;input type="text"
+           name="requester_name"    <span style="color:#888">← must match supabase column name exactly</span>
+           placeholder="@username"  <span style="color:#888">← hint text, disappears when typing starts</span>
+           required&gt;               <span style="color:#888">← can't submit without filling this</span>
+  &lt;/div&gt;
+
+  &lt;div class="form-group"&gt;
+    &lt;label&gt;Request type&lt;/label&gt;
+    &lt;select name="type" required&gt;
+      &lt;option value=""&gt;— select —&lt;/option&gt;   <span style="color:#888">← placeholder. value="" = required won't accept it.</span>
+      &lt;option value="bot-card"&gt;Bot Card&lt;/option&gt;  <span style="color:#888">← value = what gets saved. text = what user sees.</span>
+      &lt;option value="lorebook"&gt;Lorebook&lt;/option&gt;
+    &lt;/select&gt;
+  &lt;/div&gt;
+
+  &lt;div class="form-group"&gt;
+    &lt;label&gt;Character concept&lt;/label&gt;
+    &lt;textarea name="concept"
+              placeholder="who is this character..."
+              required&gt;&lt;/textarea&gt;  <span style="color:#888">← textarea needs both open AND close tag</span>
+  &lt;/div&gt;
+
+  &lt;button type="submit"&gt;Submit →&lt;/button&gt;
+
+&lt;/form&gt;</div>
+
+    <div class="note">
+      <span class="note-label">input vs textarea vs select</span>
+      input = one line. for short answers (username, email, discord).<br>
+      textarea = multiple lines. for longer answers (descriptions, notes).<br>
+      select = dropdown. for picking from a fixed list.<br><br>
+      all three need name="" matching your supabase column name.
+    </div>
+  </div>
+
+
+  
+
+  <hr class="rule">
+  <div class="phase-header css">// phase two — css</div>
+  <p style="color:#555;margin-bottom:40px;font-size:13px;">your HTML is written and ugly. now you make it look like something. ♡</p>
+
+
+  <div class="chapter" id="ch6">
+    <div class="chapter-title"><span class="ch-num">06</span> How CSS Works</div>
+
+    <p>CSS is written in rules. Each rule has a selector (what to target) and declarations (what to change). All CSS lives inside <code>&lt;style&gt;&lt;/style&gt;</code> in your head section.</p>
+
+    <div class="code-block">
+selector {
+  property: value;
+  property: value;
+}
+
+.hero {
+  background: #000000;
+  color: #ffffff;
+  padding: 40px;
+  text-align: center;
+}</div>
+
+    <p>How to target things:</p>
+    <div class="sel-example"><div class="sel">.classname { }</div><div class="meaning">all elements with class="classname"</div>
+    <div class="sel-example"><div class="sel">#idname { }</div><div class="meaning">the one element with id="idname"</div>
+    <div class="sel-example"><div class="sel">div { }</div><div class="meaning">ALL div elements (use carefully)</div>
+    <div class="sel-example"><div class="sel">.parent .child { }</div><div class="meaning">.child only when inside .parent</div>
+    <div class="sel-example"><div class="sel">.box.active { }</div><div class="meaning">elements with BOTH classes (no space)</div>
+    <div class="sel-example"><div class="sel">.button:hover { }</div><div class="meaning">when mouse is over .button</div>
+    <div class="sel-example"><div class="sel">.item::before { }</div><div class="meaning">fake element inserted before .item's content</div>
+    <div class="sel-example"><div class="sel">body:has(.x[open]) .nav { }</div><div class="meaning">.nav when .x[open] exists anywhere in body — your toggle uses this</div>
+  </div>
+
+
+  <div class="chapter" id="ch7">
+    <div class="chapter-title"><span class="ch-num">07</span> CSS Variables — Write These First</div>
+
+    <p>Before any other CSS, define your colors and fonts as variables in <code>:root</code>. Change a color once, updates everywhere.</p>
+
+    <div class="code-block">
+:root {
+  --bg: #0a0a0a;
+  --surface: #111111;
+  --border: #2a2a2a;
+  --purple: #bc00ff;
+  --pink: #e82fdc;
+  --text: #d0d0d0;
+  --dim: #d0d0d0;
+  --mono: 'Share Tech Mono', monospace;
+}
+
+<span style="color:#888">use them anywhere:</span>
+.hero {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+}</div>
+
+    <div class="note green">
+      <span class="note-label">why this matters</span>
+      without variables: change accent color = find and replace 40+ hex codes.<br>
+      with variables: change --purple once = done everywhere. ♡
+    </div>
+  </div>
+
+
+  <div class="chapter" id="ch8">
+    <div class="chapter-title"><span class="ch-num">08</span> Properties You'll Actually Use</div>
+
+    <table>
+      <tr><th>property</th><th>what it does</th><th>example</th></tr>
+      <tr><td>color</td><td>text color</td><td>var(--text)</td></tr>
+      <tr><td>background</td><td>background color</td><td>var(--bg)</td></tr>
+      <tr><td>font-size</td><td>text size</td><td>16px</td></tr>
+      <tr><td>font-family</td><td>the font</td><td>var(--mono)</td></tr>
+      <tr><td>font-weight</td><td>boldness</td><td>400 normal / 700 bold / 900 black</td></tr>
+      <tr><td>letter-spacing</td><td>space between characters</td><td>0.1em</td></tr>
+      <tr><td>text-transform</td><td>force case</td><td>uppercase</td></tr>
+      <tr><td>text-align</td><td>alignment</td><td>center / left / right</td></tr>
+      <tr><td>line-height</td><td>space between lines</td><td>1.7</td></tr>
+      <tr><td>padding</td><td>space INSIDE the box</td><td>20px or 10px 20px</td></tr>
+      <tr><td>margin</td><td>space OUTSIDE the box</td><td>0 auto</td></tr>
+      <tr><td>border</td><td>line around box</td><td>1px solid var(--border)</td></tr>
+      <tr><td>border-left</td><td>just left side border</td><td>3px solid var(--purple)</td></tr>
+      <tr><td>border-radius</td><td>rounded corners</td><td>8px or 50% for circle</td></tr>
+      <tr><td>width / height</td><td>dimensions</td><td>100% or 200px</td></tr>
+      <tr><td>max-width</td><td>won't grow beyond this</td><td>860px</td></tr>
+      <tr><td>display</td><td>layout type</td><td>flex / grid / block / none</td></tr>
+      <tr><td>opacity</td><td>0 = invisible, 1 = solid</td><td>0.5</td></tr>
+      <tr><td>cursor</td><td>mouse cursor style</td><td>pointer</td></tr>
+      <tr><td>transition</td><td>animate a change</td><td>color 0.2s ease</td></tr>
+      <tr><td>box-shadow</td><td>shadow or glow</td><td>0 0 8px var(--purple)</td></tr>
+      <tr><td>overflow</td><td>what if content overflows</td><td>hidden / auto / scroll</td></tr>
+      <tr><td>z-index</td><td>layer order. higher = on top</td><td>100</td></tr>
+      <tr><td>position</td><td>how it's positioned</td><td>relative / absolute / fixed / sticky</td></tr>
+    </table>
+  </div>
+
+
+  <div class="chapter" id="ch9">
+    <div class="chapter-title"><span class="ch-num">09</span> The Box Model</div>
+
+    <p>Every element is a box with four layers. This explains why things are spaced the way they are.</p>
+
+    <div class="box-model">
+      <div class="bm-margin">
+        <div style="font-size:10px;color:var(--yellow);margin-bottom:8px;letter-spacing:0.1em;">MARGIN — space outside, pushes other elements away</div>
+        <div class="bm-border">
+          <div style="font-size:10px;color:var(--red);margin-bottom:8px;letter-spacing:0.1em;">BORDER — the visible edge</div>
+          <div class="bm-padding">
+            <div style="font-size:10px;color:var(--cyan);margin-bottom:8px;letter-spacing:0.1em;">PADDING — space inside, between border and content</div>
+            <div class="bm-content">CONTENT</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <span class="note-label">padding vs margin in one sentence each</span>
+      padding = inside. like foam protecting something inside a box.<br>
+      margin = outside. like the gap between the box and the wall.
+    </div>
+
+    <div class="code-block">
+padding: 20px;                 <span style="color:#888">← all 4 sides</span>
+padding: 20px 40px;            <span style="color:#888">← top+bottom 20 / left+right 40</span>
+padding: 10px 20px 30px 40px;  <span style="color:#888">← top right bottom left (clockwise)</span>
+
+margin: 0 auto;                <span style="color:#888">← 0 top/bottom, auto sides = centers the element</span></div>
+  </div>
+
+
+  <div class="chapter" id="ch10">
+    <div class="chapter-title"><span class="ch-num">10</span> Display, Flex & Grid</div>
+
+    <p><code>display</code> controls how children are laid out inside an element.</p>
+
+    <p><strong class="accent">display: block</strong> — default for div, p, h1. full width. own line.</p>
+    <p><strong class="pink">display: flex</strong> — children side by side in a row. most used.</p>
+    <p><strong class="cyan">display: grid</strong> — children in rows AND columns.</p>
+    <p><strong>display: none</strong> — completely hidden. JS uses this to show/hide things.</p>
+
+    <hr class="rule">
+
+    <p><strong class="pink">Flexbox:</strong></p>
+    <div class="code-block pink-border">
+.container {
+  display: flex;
+  flex-direction: row;            <span style="color:#888">← side by side (default)</span>
+  flex-direction: column;         <span style="color:#888">← stacked top to bottom</span>
+  align-items: center;            <span style="color:#888">← vertical center (when row)</span>
+  justify-content: center;        <span style="color:#888">← horizontal center</span>
+  justify-content: space-between; <span style="color:#888">← push to opposite ends</span>
+  gap: 16px;                      <span style="color:#888">← space between children</span>
+  flex-wrap: wrap;                <span style="color:#888">← wrap to next line if too wide</span>
+}</div>
+
+    <p><strong class="cyan">Grid:</strong></p>
+    <div class="code-block cyan-border">
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;         <span style="color:#888">← 2 equal columns</span>
+  grid-template-columns: 1fr 1fr 1fr;     <span style="color:#888">← 3 equal columns</span>
+  grid-template-columns: 2fr 1fr;         <span style="color:#888">← 66% / 33%</span>
+  grid-template-columns: repeat(3, 1fr);  <span style="color:#888">← same as 1fr 1fr 1fr</span>
+  gap: 16px;
+}
+
+<span style="color:#888">1fr = 1 fraction of available space.
+1fr 1fr = two equal halves. 2fr 1fr = left gets 2/3, right gets 1/3.</span></div>
+
+    <div class="note green">
+      <span class="note-label">flex vs grid</span>
+      flex = one direction. row of links, column of form fields, center one thing.<br>
+      grid = two directions. side-by-side boxes, card layouts.
+    </div>
+  </div>
+
+
+  <div class="chapter" id="ch11">
+    <div class="chapter-title"><span class="ch-num">11</span> Positioning</div>
+
+    <table>
+      <tr><th>value</th><th>what it does</th></tr>
+      <tr><td>static</td><td>default. in normal page flow. top/left don't work.</td></tr>
+      <tr><td>relative</td><td>stays in flow. lets you nudge with top/left. makes it the reference point for absolute children inside it.</td></tr>
+      <tr><td>absolute</td><td>pulled out of flow. positions relative to nearest positioned parent. use top/right/bottom/left to place it exactly.</td></tr>
+      <tr><td>fixed</td><td>always on screen, doesn't scroll. positions relative to viewport. your toggle button and nav use this.</td></tr>
+      <tr><td>sticky</td><td>scrolls normally until it hits top: 0, then freezes. your nav uses this.</td></tr>
+    </table>
+
+    <div class="note pink">
+      <span class="note-label">the relative + absolute combo</span>
+      want something pinned inside a container?<br><br>
+      1. parent: position: relative<br>
+      2. child: position: absolute + top/right/bottom/left<br><br>
+      skip step 1 and the child escapes and positions relative to the whole page.
+    </div>
+  </div>
+
+
+  <div class="chapter" id="ch12">
+    <div class="chapter-title"><span class="ch-num">12</span> Pseudo Elements</div>
+
+    <p>Fake elements CSS generates. Don't exist in HTML but render on page. Used for decorative things, custom symbols, overlays.</p>
+
+    <div class="code-block">
+.element::before {
+  content: '';       <span style="color:#888">← REQUIRED. always. even if empty string. without this = invisible.</span>
+  display: block;
+  background: red;
+}
+
+.element::after {
+  content: '→';     <span style="color:#888">← can have text or symbols</span>
+  color: var(--purple);
+}</div>
+
+    <div class="note red">
+      <span class="note-label">the most common mistake</span>
+      forgetting content: ''<br>
+      no error. just silently doesn't appear.<br>
+      first thing to check when a ::before or ::after isn't showing up.
+    </div>
+
+    <p>Things you've built with pseudo elements:</p>
+    <div class="code-block green-border">
+<span style="color:#888">the + symbol before yes-list items:</span>
+.yn-list li::before {
+  content: '+';
+  position: absolute;
+  left: 0;
+  color: var(--green);
+}
+
+<span style="color:#888">the CRT scanline overlay:</span>
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+  pointer-events: none;
+}</div>
+  </div>
+
+
+  <div class="chapter" id="ch13">
+    <div class="chapter-title"><span class="ch-num">13</span> Quick Reference</div>
+
+    <table>
+      <tr><th>need</th><th>where</th></tr>
+      <tr><td>any CSS property</td><td><a href="https://www.w3schools.com/cssref" target="_blank">w3schools.com/cssref</a></td></tr>
+      <tr><td>flexbox visual guide</td><td><a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/" target="_blank">css-tricks.com — a guide to flexbox</a></td></tr>
+      <tr><td>grid visual guide</td><td><a href="https://css-tricks.com/snippets/css/complete-guide-grid/" target="_blank">css-tricks.com — complete guide to grid</a></td></tr>
+      <tr><td>color picker</td><td><a href="https://coolors.co" target="_blank">coolors.co</a></td></tr>
+      <tr><td>google fonts</td><td><a href="https://fonts.google.com" target="_blank">fonts.google.com</a></td></tr>
+      <tr><td>test HTML/CSS live</td><td><a href="https://codepen.io" target="_blank">codepen.io</a></td></tr>
+      <tr><td>inspect any website</td><td>F12 in browser → Elements tab</td></tr>
+    </table>
+
+    <div class="note green">
+      <span class="note-label">real talk</span>
+      every developer googles constantly. even with 10 years experience.<br>
+      knowing what to google IS the skill. you're already learning that. ♡
+    </div>
+  </div>
+
+
+
+  <div class="chapter" id="ch14">
+    <div class="chapter-title"><span class="ch-num">14</span> Units — px, %, em, rem, vw, vh</div>
+    <p>CSS has multiple units. Using the wrong one is why things look off on different screens.</p>
+    <table>
+      <tr><th>unit</th><th>what it is</th><th>when to use</th></tr>
+      <tr><td>px</td><td>pixels. fixed. always same size.</td><td>borders, small details, fixed elements</td></tr>
+      <tr><td>%</td><td>percentage of parent element's size.</td><td>width: 100% = fills container</td></tr>
+      <tr><td>em</td><td>relative to current element font-size.</td><td>padding relative to text size</td></tr>
+      <tr><td>rem</td><td>relative to root font-size (usually 16px).</td><td>font sizes, consistent spacing</td></tr>
+      <tr><td>vw</td><td>% of viewport width. 100vw = full screen width.</td><td>full-width sections, responsive text</td></tr>
+      <tr><td>vh</td><td>% of viewport height. 100vh = full screen height.</td><td>full-height hero sections</td></tr>
+    </table>
+    <div class="code-block">
+width: 100%;           <span style="color:#888">← fills parent container</span>
+width: 100vw;          <span style="color:#888">← full screen width regardless of parent</span>
+min-height: 100vh;     <span style="color:#888">← at least full screen height</span>
+font-size: 1.5rem;     <span style="color:#888">← 24px if root is 16px</span>
+padding: 1em;          <span style="color:#888">← equals current element font-size</span></div>
+    <div class="note yellow">
+      <span class="note-label">clamp() — responsive sizing without media queries</span>
+      clamp(minimum, preferred, maximum)<br><br>
+      font-size: clamp(32px, 6vw, 64px)<br>
+      = never below 32px, tries to be 6% of screen, never above 64px.<br><br>
+      your hero h1 already uses this. it's how the text scales with screen size.
+    </div>
+  </div>
+
+
+  <div class="chapter" id="ch15">
+    <div class="chapter-title"><span class="ch-num">15</span> Colors — hex, rgb, rgba</div>
+    <p>Three formats. You'll use all three.</p>
+    <div class="code-block">
+<span style="color:#888">HEX — most common</span>
+color: #bc00ff;
+color: #fff;           <span style="color:#888">← shorthand: #fff = #ffffff</span>
+
+<span style="color:#888">RGB</span>
+color: rgb(188, 0, 255);
+
+<span style="color:#888">RGBA — rgb + alpha (opacity). 0 = invisible, 1 = solid.</span>
+background: rgba(188, 0, 255, 0.1);    <span style="color:#888">← 10% purple tint</span>
+background: rgba(0, 0, 0, 0.5);        <span style="color:#888">← 50% black overlay</span>
+background: rgba(255, 255, 255, 0.08); <span style="color:#888">← barely-there white</span></div>
+    <div class="note">
+      <span class="note-label">when to use rgba</span>
+      anytime you want a color but semi-transparent — tinted card backgrounds,
+      soft glows, overlays. hex doesn't support transparency. rgba does.<br><br>
+      to convert: google "hex to rgba converter."
+    </div>
+  </div>
+
+
+  <div class="chapter" id="ch16">
+    <div class="chapter-title"><span class="ch-num">16</span> Transitions & Animations</div>
+    <p><strong>Transitions</strong> — smoothly animate a property when it changes (like on hover):</p>
+    <div class="code-block">
+.button {
+  background: #000;
+  transition: background 0.2s ease, color 0.2s ease;
+  <span style="color:#888">↑ format: property duration timing-function</span>
+}
+.button:hover {
+  background: var(--purple);
+  <span style="color:#888">↑ transition makes this animate smoothly instead of snapping</span>
+}
+
+<span style="color:#888">timing functions:</span>
+ease         <span style="color:#888">← slow, fast, slow (default, feels natural)</span>
+linear       <span style="color:#888">← constant speed (use for spinning borders)</span>
+ease-in-out  <span style="color:#888">← slow, fast, slow (good for pulsing)</span></div>
+
+    <p><strong>Animations</strong> — for things that animate on their own:</p>
+    <div class="code-block pink-border">
+<span style="color:#888">step 1: define what happens at each point</span>
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+<span style="color:#888">step 2: apply it</span>
+.dot {
+  animation: pulse 2s ease-in-out infinite;
+  <span style="color:#888">         ↑name  duration  timing    how many times</span>
+}</div>
+    <div class="note">
+      <span class="note-label">transition vs animation</span>
+      transition = reacts to something (hover, JS toggle, class change).<br>
+      animation = runs on its own continuously. defined with @keyframes.
+    </div>
+  </div>
+
+
+  <div class="chapter" id="ch17">
+    <div class="chapter-title"><span class="ch-num">17</span> Media Queries — Mobile</div>
+    <p>Apply different CSS at different screen sizes. How you stop things looking broken on phones.</p>
+    <div class="code-block">
+@media (max-width: 600px) {
+  <span style="color:#888">/* only applies on screens 600px or smaller */</span>
+  .yn-grid {
+    grid-template-columns: 1fr;  <span style="color:#888">← stack to one column on phone</span>
+  }
+  .hero h1 {
+    font-size: 28px;             <span style="color:#888">← smaller heading on phone</span>
+  }
+}
+
+<span style="color:#888">common breakpoints:</span>
+max-width: 480px   <span style="color:#888">← small phones</span>
+max-width: 768px   <span style="color:#888">← tablets</span>
+max-width: 992px   <span style="color:#888">← small laptops (chub uses this)</span></div>
+    <div class="note green">
+      <span class="note-label">the workflow</span>
+      write your CSS for desktop first. look at it on a phone (or resize browser).<br>
+      whatever looks broken — fix it inside a max-width media query.
+    </div>
+  </div>
+
+
+  <div class="chapter" id="ch18">
+    <div class="chapter-title"><span class="ch-num">18</span> DevTools — Your Most Important Tool</div>
+    <p>Press <code>F12</code> in any browser. This is how you debug, inspect other sites, and test changes live before writing them in your file.</p>
+    <div class="code-block green-border">
+ELEMENTS TAB:
+→ shows full HTML of the page
+→ click any element to select it
+→ right panel shows all CSS applied to it
+→ edit values live in browser (won't save, just for testing)
+→ hover element to see its box model (margin, border, padding, content)
+
+CONSOLE TAB:
+→ shows JavaScript errors
+→ red text = error. click to see which line broke.
+→ if something isn't working, check here first.
+
+HOW YOU ALREADY USED DEVTOOLS:
+→ finding .ant-avatar and other Chub/J.AI class names
+→ seeing why a selector wasn't targeting the right element
+→ testing CSS values before writing them in your bio</div>
+    <div class="note purple">
+      <span class="note-label">inspecting other sites</span>
+      right-click any element on any website → Inspect.<br>
+      the CSS panel shows exactly what styles are applied.<br>
+      this is the fastest way to learn from sites you like. ♡
+    </div>
+  </div>
+
+
+  <div class="chapter" id="ch19">
+    <div class="chapter-title"><span class="ch-num">19</span> Common Mistakes</div>
+    <table>
+      <tr><th>mistake</th><th>what happens</th><th>fix</th></tr>
+      <tr><td>forgot closing tag</td><td>layout breaks after that point</td><td>find unclosed tag, add &lt;/tagname&gt;</td></tr>
+      <tr><td>wrong closing order</td><td>silent layout break</td><td>close inner tags before outer ones</td></tr>
+      <tr><td>missing content: '' on ::before</td><td>element silently doesn't appear</td><td>add content: '' as first declaration</td></tr>
+      <tr><td>CSS comment /* */ in HTML</td><td>comment shows as visible text</td><td>use &lt;!-- --&gt; in HTML</td></tr>
+      <tr><td>name="" doesn't match column</td><td>form submits, data doesn't save</td><td>check exact spelling, case sensitive</td></tr>
+      <tr><td>missing closing brace in CSS</td><td>all CSS after it stops working</td><td>find the missing }, usually one rule before the break</td></tr>
+      <tr><td>absolute escaping container</td><td>positions relative to whole page</td><td>add position: relative to parent</td></tr>
+      <tr><td>z-index not working</td><td>still behind other elements</td><td>z-index only works on positioned elements. add position: relative first.</td></tr>
+    </table>
+    <div class="note red">
+      <span class="note-label">when something breaks and you don't know why</span>
+      1. open DevTools (F12)<br>
+      2. click the broken element<br>
+      3. see what CSS is applied and what's crossed out (overridden)<br>
+      4. check Console tab for red errors<br>
+      5. comment out recent changes one by one until it works<br><br>
+      debugging is just elimination. remove things until it works. add back one by one.
+    </div>
+  </div>
+
+
+  <div class="chapter" id="ch20">
+    <div class="chapter-title"><span class="ch-num">20</span> Gradients</div>
+    <p>Three types. You've already used all of them.</p>
+    <div class="code-block">
+<span style="color:#888">LINEAR — straight line between colors</span>
+background: linear-gradient(90deg, #bc00ff, #e82fdc);
+<span style="color:#888">↑ 90deg = left to right. 0deg = bottom to top. 45deg = diagonal.</span>
+
+background: linear-gradient(135deg, #000 45%, #1a0033);
+<span style="color:#888">↑ adding % = hard stop. no fade. black until 45% then switch.</span>
+
+<span style="color:#888">RADIAL — radiates out from a center point</span>
+background: radial-gradient(ellipse at 50% 0%, rgba(188,0,255,0.15), transparent 60%);
+<span style="color:#888">↑ shape, position, colors. transparent 60% = fades to nothing by 60%.</span>
+
+<span style="color:#888">CONIC — rotates around a center like a color wheel</span>
+background: conic-gradient(from var(--angle), #bc00ff, #e82fdc, #00e5cc, #bc00ff);
+<span style="color:#888">↑ your spinning border uses this.</span>
+
+<span style="color:#888">REPEATING — tiles the pattern infinitely</span>
+background: repeating-linear-gradient(
+  0deg, transparent, transparent 2px,
+  rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px
+);
+<span style="color:#888">↑ your scanline effect. transparent 2px then faint line 2px, repeat.</span></div>
+    <div class="note">
+      <span class="note-label">gradient text — all four lines required</span>
+      background: linear-gradient(90deg, var(--purple), var(--pink));<br>
+      -webkit-background-clip: text;<br>
+      -webkit-text-fill-color: transparent;<br>
+      background-clip: text;<br><br>
+      forget any one of these = doesn't work.
+    </div>
+  </div>
+
+
+  
+
+  <hr class="rule">
+  <div class="phase-header deep">// phase three — deeper</div>
+  <p style="color:#555;margin-bottom:40px;font-size:13px;">things that come up constantly once you're actually building. you've already used most of these without fully knowing what they were. ♡</p>
+
+
+  <div class="chapter" id="ch21">
+    <div class="chapter-title"><span class="ch-num">21</span> Specificity & !important</div>
+    <p>When two CSS rules target the same element, the browser has to decide which one wins. That decision is called specificity. Understanding this explains why your styles sometimes get ignored.</p>
+    <div class="code-block">
+<span style="color:#888">specificity hierarchy — higher number wins:</span>
+
+inline style (style="" on the element)    = 1000 points
+#id selector                              = 100 points
+.class selector / :pseudo-class           = 10 points
+element selector (div, p, h1)             = 1 point
+
+<span style="color:#888">examples:</span>
+div p { color: red; }          <span style="color:#888">← 2 points (div=1 + p=1)</span>
+.section p { color: blue; }    <span style="color:#888">← 11 points (.section=10 + p=1) — this wins</span>
+#hero p { color: green; }      <span style="color:#888">← 101 points — this wins over both</span>
+
+<span style="color:#888">when two rules have equal specificity, the LAST one in the file wins.</span></div>
+
+    <div class="note red">
+      <span class="note-label">!important — the nuclear option</span>
+      adding !important to a declaration overrides ALL specificity rules.<br>
+      nothing can override it except another !important with higher specificity.<br><br>
+      color: #bc00ff !important;<br><br>
+      this is why EVERYTHING in your Chub bio needs !important —
+      Chub's own CSS has high specificity selectors that would override your styles otherwise.
+      !important is the only way to guarantee your rule wins on someone else's platform.<br><br>
+      in your OWN sites (GitHub Pages, Nekoweb) you generally DON'T need !important
+      because you control all the CSS. only use it when fighting platform styles.
+    </div>
+
+    <div class="code-block">
+<span style="color:#888">if your style isn't applying, check DevTools —
+crossed-out CSS = being overridden by something more specific.
+solutions in order of preference:</span>
+
+1. make your selector more specific:
+   .section .title { }  instead of  .title { }
+
+2. add the parent element:
+   nav .nav-logo { }  instead of  .nav-logo { }
+
+3. last resort: add !important
+   color: red !important;</div>
+  </div>
+
+
+  <div class="chapter" id="ch22">
+    <div class="chapter-title"><span class="ch-num">22</span> Transform</div>
+    <p>The <code>transform</code> property moves, scales, rotates, or skews elements. It doesn't affect page layout — the element stays in its original space, it just visually changes.</p>
+    <div class="code-block">
+<span style="color:#888">TRANSLATE — move the element</span>
+transform: translateX(42px);      <span style="color:#888">← move right 42px (negative = left)</span>
+transform: translateY(-50%);      <span style="color:#888">← move up by 50% of element height</span>
+transform: translate(42px, -50%); <span style="color:#888">← move right AND up at the same time</span>
+transform: translateX(-50%);      <span style="color:#888">← classic centering trick</span>
+
+<span style="color:#888">ROTATE</span>
+transform: rotate(45deg);         <span style="color:#888">← 45 degree clockwise rotation</span>
+transform: rotate(-90deg);        <span style="color:#888">← counterclockwise</span>
+transform: rotate(180deg);        <span style="color:#888">← upside down</span>
+
+<span style="color:#888">SCALE — resize</span>
+transform: scale(1.05);           <span style="color:#888">← 5% bigger (good for hover effect)</span>
+transform: scale(0.9);            <span style="color:#888">← 10% smaller</span>
+transform: scaleX(-1);            <span style="color:#888">← flip horizontally</span>
+
+<span style="color:#888">COMBINING — multiple transforms in one line</span>
+transform: translate(42px, -50%); <span style="color:#888">← your toggle knob uses this</span>
+transform: translateY(-4px) scale(1.05); <span style="color:#888">← lift + enlarge on hover</span></div>
+
+    <div class="note">
+      <span class="note-label">the centering trick</span>
+      classic way to center an absolutely positioned element:<br><br>
+      position: absolute;<br>
+      left: 50%;<br>
+      transform: translateX(-50%);<br><br>
+      left: 50% puts the LEFT EDGE at center. translateX(-50%) then
+      shifts it back by half its own width. net result = perfectly centered.
+      you've seen this pattern in the request site queue table.
+    </div>
+  </div>
+
+
+  <div class="chapter" id="ch23">
+    <div class="chapter-title"><span class="ch-num">23</span> Filter & Backdrop-Filter</div>
+    <p><code>filter</code> applies visual effects to an element. <code>backdrop-filter</code> applies them to whatever is BEHIND the element.</p>
+    <div class="code-block">
+<span style="color:#888">FILTER — applied to the element itself</span>
+filter: blur(4px);                <span style="color:#888">← blurs the element</span>
+filter: brightness(0.8);          <span style="color:#888">← 80% brightness (darker)</span>
+filter: brightness(1.2);          <span style="color:#888">← 120% brightness (lighter)</span>
+filter: saturate(1.5);            <span style="color:#888">← 150% saturation (more vivid)</span>
+filter: contrast(1.1);            <span style="color:#888">← 110% contrast</span>
+filter: invert(1);                <span style="color:#888">← fully inverts colors</span>
+filter: grayscale(1);             <span style="color:#888">← black and white</span>
+filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5)); <span style="color:#888">← shadow (works on transparent PNGs)</span>
+
+<span style="color:#888">COMBINING filters:</span>
+filter: blur(4px) saturate(1.15) contrast(1.05);  <span style="color:#888">← your banner image uses this</span>
+
+<span style="color:#888">RECOLORING with filter — what you used on the sun/moon emoji:</span>
+filter: invert(1) sepia(1) saturate(10) hue-rotate(270deg) brightness(1.1);
+<span style="color:#888">↑ this chain shifts the color. hue-rotate changes the hue angle.
+  use cssgenerator.org/filter to generate these values from a hex color.</span>
+
+<span style="color:#888">BACKDROP-FILTER — applied to what's BEHIND the element (glass effect)</span>
+backdrop-filter: blur(12px);
+backdrop-filter: blur(12px) saturate(180%);
+<span style="color:#888">↑ your toggle button uses this. makes it look frosted/glassy.
+  the element needs a semi-transparent background to show the effect.</span></div>
+
+    <div class="note cyan">
+      <span class="note-label">filter vs backdrop-filter</span>
+      filter: blur() blurs the element itself and everything inside it.<br>
+      backdrop-filter: blur() blurs what's behind it, like frosted glass.<br><br>
+      backdrop-filter needs: background with some transparency (rgba) to work visibly.
+      a fully opaque background blocks the effect.
+    </div>
+  </div>
+
+
+  <div class="chapter" id="ch24">
+    <div class="chapter-title"><span class="ch-num">24</span> The details & summary Toggle Trick</div>
+    <p>The <code>&lt;details&gt;</code> and <code>&lt;summary&gt;</code> HTML elements give you a native browser toggle with NO JavaScript. This is the technique behind your Chub dark/light mode toggle.</p>
+    <div class="code-block">
+<span style="color:#888">basic usage:</span>
+&lt;details&gt;
+  &lt;summary&gt;click me&lt;/summary&gt;
+  &lt;p&gt;this content shows when open&lt;/p&gt;
+&lt;/details&gt;
+
+<span style="color:#888">how it works:
+  — closed by default
+  — clicking summary toggles open/closed
+  — when open, the [open] attribute appears on the details element
+  — you can target [open] in CSS</span>
+
+<span style="color:#888">targeting open/closed state in CSS:</span>
+details[open] summary {
+  color: var(--purple);    <span style="color:#888">← when open</span>
+}
+
+details summary {
+  color: #bbb;       <span style="color:#888">← when closed</span>
+}
+
+<span style="color:#888">the body:has() trick — affect OTHER elements based on toggle state:</span>
+body:has(details[open]) .nav {
+  background: white;       <span style="color:#888">← nav turns white when details is open</span>
+}
+
+body:has(.theme-toggle[open])::before {
+  background: #e82fdc;     <span style="color:#888">← your light mode bg swap</span>
+}</div>
+
+    <div class="note purple">
+      <span class="note-label">why this matters for Chub and J.AI</span>
+      script tags don't work on Chub/J.AI profiles — JavaScript is blocked.<br>
+      details + body:has() = a pure CSS toggle with no JS required.<br><br>
+      this is what you cracked that people said wasn't possible. ♡<br><br>
+      the invisible details trick: make details opacity: 0 and position it
+      over a visible div. clicking the invisible details toggles the state.
+      body:has() then updates the visible div. that's your toggle button.
+    </div>
+
+    <div class="code-block green-border">
+<span style="color:#888">hide the default "▶ Details" arrow:</span>
+summary { list-style: none; }
+summary::-webkit-details-marker { display: none; }
+
+<span style="color:#888">open by default (add the open attribute in HTML):</span>
+&lt;details open&gt;
+  &lt;summary&gt;...&lt;/summary&gt;
+&lt;/details&gt;</div>
+  </div>
+
+
+  <div class="chapter" id="ch25">
+    <div class="chapter-title"><span class="ch-num">25</span> Overflow & Scroll Boxes</div>
+    <p>What happens when content is bigger than its container. You'll need this for scroll boxes, hidden overflow on cards, and text that shouldn't wrap.</p>
+    <div class="code-block">
+<span style="color:#888">overflow values:</span>
+overflow: visible;     <span style="color:#888">← default. content spills outside the box.</span>
+overflow: hidden;      <span style="color:#888">← clips anything outside. nothing scrolls.</span>
+overflow: auto;        <span style="color:#888">← adds scrollbar only when content overflows.</span>
+overflow: scroll;      <span style="color:#888">← always shows scrollbar even if not needed.</span>
+
+<span style="color:#888">control X and Y separately:</span>
+overflow-x: hidden;    <span style="color:#888">← hide horizontal overflow (stops side scroll)</span>
+overflow-y: auto;      <span style="color:#888">← scroll vertically when needed</span>
+
+<span style="color:#888">making a scroll box:</span>
+.scroll-box {
+  max-height: 300px;   <span style="color:#888">← caps the height</span>
+  overflow-y: auto;    <span style="color:#888">← adds vertical scroll when content exceeds 300px</span>
+}
+
+<span style="color:#888">hide the scrollbar visually but keep scroll working:</span>
+.scroll-box::-webkit-scrollbar { display: none; }
+.scroll-box { -ms-overflow-style: none; scrollbar-width: none; }</div>
+
+    <div class="note">
+      <span class="note-label">border-radius + overflow: hidden trick</span>
+      if you have a rounded container with an image inside and the image
+      ignores the border-radius (corners still sharp):<br><br>
+      add overflow: hidden to the container.<br><br>
+      the overflow clips the image to the rounded shape. ♡
+    </div>
+  </div>
+
+
+  <div class="chapter" id="ch26">
+    <div class="chapter-title"><span class="ch-num">26</span> CSS Selectors — The Ones You'll Actually Use</div>
+    <p>Beyond the basics. These are the selectors that make things feel smart.</p>
+    <div class="code-block">
+<span style="color:#888">DESCENDANT — element anywhere inside parent</span>
+.section p { }           <span style="color:#888">← any p inside .section at any depth</span>
+
+<span style="color:#888">DIRECT CHILD — only immediate children</span>
+.section > p { }         <span style="color:#888">← only p directly inside .section, not nested deeper</span>
+
+<span style="color:#888">ADJACENT SIBLING — element immediately after another</span>
+h2 + p { }               <span style="color:#888">← p that comes right after an h2</span>
+
+<span style="color:#888">NTH-CHILD — target specific positions in a list</span>
+li:nth-child(1) { }      <span style="color:#888">← first list item</span>
+li:nth-child(2) { }      <span style="color:#888">← second list item</span>
+li:nth-child(odd) { }    <span style="color:#888">← every odd item (1, 3, 5...)</span>
+li:nth-child(even) { }   <span style="color:#888">← every even item (2, 4, 6...)</span>
+
+<span style="color:#888">NOT — exclude something</span>
+li:not(:last-child) { }  <span style="color:#888">← all list items except the last one</span>
+.box:not(.active) { }    <span style="color:#888">← all .box elements that don't have .active</span>
+
+<span style="color:#888">HAS — parent based on what it contains (you use this for your toggle)</span>
+body:has(.toggle[open]) .nav { }   <span style="color:#888">← .nav when toggle is open</span>
+div:has(> img) { }                 <span style="color:#888">← div that directly contains an img</span>
+
+<span style="color:#888">ATTRIBUTE SELECTORS</span>
+[open] { }               <span style="color:#888">← any element with the open attribute</span>
+[type="text"] { }        <span style="color:#888">← inputs with type="text"</span>
+[class*="ant-col"] { }   <span style="color:#888">← elements whose class CONTAINS "ant-col" — your Chub selectors use this</span></div>
+  </div>
+
+
+  <div class="chapter" id="ch27">
+    <div class="chapter-title"><span class="ch-num">27</span> Fonts — Loading, Using, Fallbacks</div>
+    <p>Everything about fonts you need to know.</p>
+    <div class="code-block">
+<span style="color:#888">GOOGLE FONTS — easiest method</span>
+&lt;link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700;900&display=swap" rel="stylesheet"&gt;
+
+<span style="color:#888">then use it:</span>
+font-family: 'Rajdhani', sans-serif;
+
+<span style="color:#888">loading multiple fonts in one link tag (more efficient):</span>
+https://fonts.googleapis.com/css2?family=Rajdhani:wght@700;900&family=Share+Tech+Mono&display=swap
+
+<span style="color:#888">SELF-HOSTED FONT (from dafont etc) — upload file to your repo</span>
+@font-face {
+  font-family: 'MyFont';         <span style="color:#888">← the name YOU give it</span>
+  src: url('myfont.woff2') format('woff2'),
+       url('myfont.ttf') format('truetype');
+  font-weight: normal;
+}
+
+<span style="color:#888">then use it exactly like Google Fonts:</span>
+font-family: 'MyFont', sans-serif;
+
+<span style="color:#888">FONT STACK — always include a fallback</span>
+font-family: 'Share Tech Mono', 'Courier New', monospace;
+<span style="color:#888">↑ tries Share Tech Mono first. if not loaded, tries Courier New. if that fails, any monospace.</span>
+
+<span style="color:#888">generic fallback families:</span>
+serif        <span style="color:#888">← has serifs (Times New Roman style)</span>
+sans-serif   <span style="color:#888">← no serifs (clean, modern)</span>
+monospace    <span style="color:#888">← fixed width, code-style</span></div>
+
+    <div class="note yellow">
+      <span class="note-label">font-display: swap</span>
+      the display=swap in Google Fonts URLs is important.<br>
+      without it: page shows blank text until font loads.<br>
+      with swap: shows fallback font immediately, swaps to custom font when ready.<br><br>
+      always include it. Google Fonts adds it automatically when you use their embed code.
+    </div>
+  </div>
+
+
+  <div class="chapter" id="ch28">
+    <div class="chapter-title"><span class="ch-num">28</span> The Stuff No One Tells You</div>
+    <p>Observations from actually building things. Not rules — just true things.</p>
+
+    <div class="note green">
+      <span class="note-label">on learning</span>
+      you will forget syntax constantly. that's normal. that never fully stops.<br>
+      the goal isn't to memorize everything. it's to know what exists
+      so you know what to look up. that's what separates someone who codes
+      from someone who doesn't — not memorization, but familiarity.<br><br>
+      you're already building that familiarity. every time you read a CSS property
+      and go "oh that's what that does" — that's learning happening. ♡
+    </div>
+
+    <div class="note purple">
+      <span class="note-label">on using AI as a tool</span>
+      using AI to help you code is like using Google — it's a tool, not a crutch,
+      as long as you're trying to understand what comes out.<br><br>
+      the difference between a vibecoder and someone learning:
+      vibecoder copies and pastes without reading it.<br>
+      you're learning: you read it, question it, catch mistakes, ask why.<br><br>
+      that's the whole difference. and you've been doing the right one. ♡
+    </div>
+
+    <div class="note">
+      <span class="note-label">on debugging</span>
+      "it's not working" is never the whole problem statement.<br>
+      train yourself to say: "I expected X, but I'm getting Y, and I've tried Z."<br><br>
+      that's how you ask better questions — to me, to Google, to yourself.
+      the more specific you can describe the problem, the faster it gets solved.
+    </div>
+
+    <div class="note pink">
+      <span class="note-label">on CSS specificity fights (especially on Chub)</span>
+      when your style isn't applying and you don't know why:<br>
+      1. open DevTools<br>
+      2. find your rule<br>
+      3. if it's crossed out = something more specific is overriding it<br>
+      4. either make your selector more specific OR add !important<br><br>
+      on platforms you don't control (Chub, J.AI): !important on everything.<br>
+      on your own sites: try to avoid !important and use proper specificity.
+    </div>
+
+    <div class="note yellow">
+      <span class="note-label">on building things that don't exist yet</span>
+      the toggle you built — people said it wasn't possible on Chub.<br>
+      you figured it out anyway by understanding how &lt;details&gt; works
+      and combining it with body:has().<br><br>
+      that's what actually good CSS work looks like — not memorizing properties,
+      but understanding enough to combine things in unexpected ways.<br><br>
+      you're closer to that than you think. ♡
+    </div>
+  </div>
+
+  
+
+  <div style="border-top:1px solid var(--border);padding-top:32px;margin-top:32px;">
+    <p style="color:#555;font-size:12px;">// html first. always. you got this fruti. ♡</p>
+  </div>
+
+</div><!-- end main -->
+</div><!-- end layout -->
+</body>
+</html>
