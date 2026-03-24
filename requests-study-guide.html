@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<!--
+  ═══════════════════════════════════════════════════════════════
+  WHAT IS THIS FILE?
+  ═══════════════════════════════════════════════════════════════
+  This is an HTML file. HTML (HyperText Markup Language) is the
+  skeleton of every webpage. It tells the browser WHAT is on the
+  page — headings, paragraphs, buttons, forms, etc.
+
+  CSS (which lives inside the <style> tag below) tells the browser
+  HOW things LOOK — colors, sizes, layout, fonts, animations.
+
+  JavaScript (inside the <script> tag at the bottom) tells the
+  browser what to DO when things happen — like submitting a form.
+
+  Think of it like a house:
+  HTML = the walls and rooms (structure)
+  CSS  = the paint and furniture (appearance)
+  JS   = the electricity and plumbing (behavior)
+
+  YOU ONLY NEED TO EDIT:
+  - Text inside tags (your rules, your yes/no list, your username)
+  - Color values in :root (to change your color scheme)
+  - The two SUPABASE keys at the bottom of the <script>
+  Everything else you can leave alone until you're ready to learn it.
+  ═══════════════════════════════════════════════════════════════
+-->
+<html lang="en">
+<!--
+  <html> is the root element — everything lives inside it.
+  lang="en" tells the browser this page is in English.
+  This helps screen readers and search engines understand your page.
+-->
+
+<head>
+<!--
+  ═══════════════════════════════════════════════════════════════
+  THE <head> SECTION
+  ═══════════════════════════════════════════════════════════════
+  The <head> is invisible to visitors. It contains information
+  ABOUT the page rather than content ON the page.
+  Things like: the title, font imports, CSS styles, meta info.
+  Nothing in <head> shows up in the browser window directly.
+  ═══════════════════════════════════════════════════════════════
+-->
+
+<meta charset="UTF-8">
+<!--
+  charset="UTF-8" tells the browser which character set to use.
+  UTF-8 supports basically every character and emoji in existence.
+  If you remove this, special characters like ✓ ✕ → might break.
+  Always include this. Always first in <head>.
+-->
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--
+  This makes your page responsive on mobile devices.
+  Without it, phones would zoom out and show a tiny desktop version.
+  width=device-width = match the screen width of whatever device is viewing
+  initial-scale=1.0 = don't zoom in or out on load
+  Always include this if you want your site to look good on phones.
+-->
+
+<title>requests — deamnfreak</title>
+<!--
+  This text shows in the browser tab.
+  It also shows in Google search results as the page title.
+  Keep it short and descriptive.
+  Change "deamnfreak" to whatever you want.
+
+  EXAMPLE: if you wanted it to say "fruti's requests":
+  <title>fruti's requests</title>
+-->
+
+<!--
+  ═══════════════════════════════════════════════════════════════
+  LOADING FONTS FROM GOOGLE FONTS
+  ═══════════════════════════════════════════════════════════════
+  Fonts don't live on your computer — they're loaded from Google's
+  servers each time someone visits your page.
+
+  This one <link> loads THREE fonts at once:
+  1. Share Tech Mono — the typewriter/code looking font
+  2. Rajdhani        — the bold display heading font
+  3. Exo 2           — the clean body text font
+
+  The numbers after the colon (wght@400;600;700;900) are font
+  WEIGHTS — how bold the font is:
+  100 = ultra thin
+  400 = regular/normal
+  700 = bold
+  900 = black/extra bold
+  Loading only the weights you need = faster page load.
+
+  HOW TO ADD A DIFFERENT FONT:
+  1. Go to fonts.google.com
+  2. Find a font you like, click it
+  3. Click "Get font" then "Get embed code"
+  4. Copy the <link> tag they give you
+  5. Replace this <link> with theirs
+  6. Then in your CSS use: font-family: 'Font Name', fallback;
+
+  HOW TO ADD A SECOND FONT alongside this one:
+  You don't need a second <link> — Google lets you stack families
+  in one URL separated by &family=
+  Example adding 'Orbitron':
+  ...css2?family=Share+Tech+Mono&family=Rajdhani:wght@900&family=Orbitron...
+
+  WHY THREE FONTS?
+  Good design usually pairs 2-3 fonts with different personalities:
+  - One for big headings (bold, expressive)
+  - One for body text (readable at small sizes)
+  - One for labels/code/details (monospace/technical)
+  Using the same font for everything makes a page feel flat.
+  ═══════════════════════════════════════════════════════════════
+-->
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+/*
+  ═══════════════════════════════════════════════════════════════
+  THE CSS RESET
+  ═══════════════════════════════════════════════════════════════
+  Every browser has its own default styles. Chrome, Firefox,
+  Safari all add different amounts of margin and padding to
+  elements by default. This causes your page to look different
+  across browsers.
+
+  The reset removes all those defaults so YOU control everything.
+
+  * = targets EVERY element on the page
+  *::before and *::after = targets pseudo-elements too (more on those later)
+
+  box-sizing: border-box is the most important one:
+  DEFAULT (content-box): if you set width: 200px and padding: 20px,
+    the actual box becomes 240px wide (200 + 20 + 20). Annoying.
+  border-box: the 200px INCLUDES the padding. Box stays 200px.
+    This makes layout math way more predictable.
+
+  margin: 0 and padding: 0 wipe all default spacing.
+  ═══════════════════════════════════════════════════════════════
+*/
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/*
+  ═══════════════════════════════════════════════════════════════
+  CSS CUSTOM PROPERTIES (VARIABLES)
+  ═══════════════════════════════════════════════════════════════
+  :root targets the very top of the document (the <html> element).
+  Variables defined here are available EVERYWHERE in your CSS.
+
+  Syntax: --variable-name: value;
+  Usage: color: var(--purple);
+
+  WHY USE VARIABLES?
+  Imagine you use your purple color #bc00ff in 30 different places.
+  If you want to change it, you'd have to find and replace all 30.
+  With a variable, change it once in :root = changes everywhere.
+
+  THIS IS WHERE YOU CHANGE YOUR COLOR SCHEME.
+  Swap out the hex values and the whole page recolors instantly.
+
+  HOW TO PICK COLORS:
+  Go to coolors.co or htmlcolorcodes.com to find hex codes.
+  Or use the color picker in browser DevTools (F12 > Elements > click a color).
+
+  --bg: main page background (darkest color, almost black)
+  --surface: slightly lighter, used for cards and boxes
+  --border: the subtle lines between elements
+  --purple: your main accent — used most
+  --pink: secondary accent — used for contrast
+  --cyan: third accent — used for form elements
+  --green: status color — green = open, change to red when closed
+  --text: main readable text color
+  --dim: secondary/helper text, less important info
+
+  Font variables store font stacks:
+  'Share Tech Mono', monospace = use Share Tech Mono if loaded,
+  fall back to any monospace font if it fails to load.
+  Always include a fallback font family.
+  ═══════════════════════════════════════════════════════════════
+*/
+:root {
+  --bg: #0a0a0a;
+  --surface: #111;
+  --border: #2a2a2a;
+  --purple: #bc00ff;
+  --pink: #e82fdc;
+  --cyan: #00e5cc;
+  --green: #00ff88;
+  --text: #d0d0d0;
+  --dim: #777;
+  --mono: 'Share Tech Mono', monospace;
+  --head: 'Rajdhani', sans-serif;
+  --body: 'Exo 2', sans-serif;
+}
+
+/*
+  ═══════════════════════════════════════════════════════════════
+  THE SPINNING BORDER TRICK
+  ═══════════════════════════════════════════════════════════════
+  This creates the animated rainbow border around the entire page.
+
+  HOW IT WORKS:
+  1. The <html> element gets a conic-gradient background
+  2. The <body> has margin: 3px — creating a 3px gap on all sides
+  3. Through that gap you can see the <html> background = border effect
+
+  conic-gradient(from var(--angle), color1, color2, color3...)
+  = a gradient that rotates around a center point
+  from var(--angle) = the starting angle, which we animate
+
+  @property --angle tells the browser that --angle is an <angle>
+  type so it CAN be animated. Without this declaration,
+  CSS custom properties can't be transitioned or animated.
+  This is a modern CSS feature (Chrome 85+, Firefox 128+).
+
+  @keyframes border-spin rotates --angle from 0deg to 360deg
+  = one full spin. Combined with the animation property on html,
+  it loops forever.
+
+  TO CHANGE THE BORDER COLORS:
+  Edit the colors in conic-gradient() in the html rule below.
+
+  TO CHANGE THE BORDER WIDTH:
+  Change margin: 3px on the body rule. 6px = thicker border.
+
+  TO REMOVE THE BORDER ENTIRELY:
+  Delete the html rule and set body { margin: 0; }
+
+  TO SLOW DOWN OR SPEED UP THE SPIN:
+  Change 8s in animation: border-spin 8s linear infinite
+  Lower number = faster, higher = slower.
+  ═══════════════════════════════════════════════════════════════
+*/
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes border-spin {
+  to { --angle: 360deg; }
+}
+
+html {
+  scroll-behavior: smooth;
+  /* scroll-behavior: smooth makes anchor links (#s-what etc) scroll
+     smoothly instead of jumping instantly */
+  background: conic-gradient(from var(--angle), var(--purple), var(--pink), var(--cyan), #e0a800, var(--purple));
+  animation: border-spin 8s linear infinite;
+}
+
+/*
+  ═══════════════════════════════════════════════════════════════
+  THE BODY
+  ═══════════════════════════════════════════════════════════════
+  The body is your main page container.
+
+  background: var(--bg) = solid dark background that covers the
+  html element's spinning gradient, except where the margin gap is.
+
+  font-family: var(--body) = sets the default font for all text.
+  Individual elements can override this with their own font-family.
+
+  font-size: 15px = the base font size. All relative units (em, rem)
+  calculate from this number.
+
+  line-height: 1.7 = the space between lines of text.
+  1.7 = 1.7x the font size. Good for readability.
+  1.0 would make lines touch each other. Too cramped.
+
+  min-height: calc(100vh - 6px)
+  100vh = 100% of the viewport height (the visible screen)
+  We subtract 6px because margin: 3px on all sides = 6px total
+  This makes the body fill the full screen minus the border gap.
+
+  margin: 3px = the gap that reveals the spinning border behind it.
+  ═══════════════════════════════════════════════════════════════
+*/
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.7;
+  min-height: calc(100vh - 6px);
+  margin: 3px;
+}
+
+/*
+  ═══════════════════════════════════════════════════════════════
+  THE SCANLINE OVERLAY (CRT EFFECT)
+  ═══════════════════════════════════════════════════════════════
+  This creates the subtle horizontal lines across the entire page
+  that give it that old monitor / CRT screen feel.
+
+  body::before = a PSEUDO ELEMENT. It's like a fake invisible
+  element that CSS generates automatically. It doesn't exist in
+  your HTML but it renders visually. You can style it like any div.
+
+  ::before inserts content BEFORE the element's content.
+  ::after inserts content AFTER.
+  They REQUIRE content: '' to render — even if empty string.
+
+  position: fixed = stays in place even when you scroll.
+  inset: 0 = shorthand for top: 0; right: 0; bottom: 0; left: 0.
+  = covers the entire viewport.
+
+  repeating-linear-gradient creates a pattern that tiles forever:
+  0deg = vertical? No — 0deg is straight up, which makes horizontal lines.
+  transparent = see-through
+  rgba(0,0,0,0.08) = very faint black
+  The pattern: transparent 0→2px, faint black 2→4px, repeat.
+  = thin faint lines every 4px.
+
+  pointer-events: none = you can click THROUGH this element.
+  Without this, it would block all clicks on your page.
+
+  z-index: 999 = layering order. Higher number = on top.
+  Sits above everything except elements with z-index: 1000+.
+
+  TO REMOVE THE SCANLINES:
+  Delete this entire body::before rule.
+
+  TO MAKE SCANLINES MORE/LESS VISIBLE:
+  Change the 0.08 opacity in rgba(0,0,0,0.08). 
+  0.03 = barely visible. 0.2 = pretty strong.
+  ═══════════════════════════════════════════════════════════════
+*/
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.08) 2px,
+    rgba(0,0,0,0.08) 4px
+  );
+  pointer-events: none;
+  z-index: 999;
+}
+
+/*
+  ═══════════════════════════════════════════════════════════════
+  THE NAVIGATION BAR
+  ═══════════════════════════════════════════════════════════════
+  position: sticky = the nav sticks to the top of the screen
+  as you scroll down. It scrolls with the page UNTIL it hits
+  top: 0, then it freezes there.
+
+  This is different from position: fixed which is always stuck.
+  sticky starts in its natural position and only sticks once
+  it would scroll off screen.
+
+  z-index: 100 = above page content but below the scanline (999).
+  The scanline still appears over the nav, which looks good.
+
+  display: flex = flexbox layout.
+  Flex makes children sit side by side in a row by default.
+  align-items: center = vertically centers children.
+  justify-content: space-between = pushes children to opposite ends.
+  So the logo goes left, the links go right.
+
+  TO CENTER THE NAV CONTENT INSTEAD:
+  Change justify-content: space-between to justify-content: center
+  and add gap: 40px between logo and links.
+
+  TO MAKE THE NAV FULL WIDTH WITH A DIFFERENT BACKGROUND:
+  Change background: var(--surface) to any color.
+  Or use background: transparent for a see-through nav.
+  ═══════════════════════════════════════════════════════════════
+*/
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.nav-logo { color: var(--purple); letter-spacing: 0.1em; }
+
+.nav-links { display: flex; gap: 24px; }
+/*
+  gap: 24px = space between each nav link.
+  Increase for more breathing room, decrease to pack them tighter.
+*/
+
+.nav-links a {
+  color: var(--dim);
+  text-decoration: none;
+  /* text-decoration: none removes the default underline on links */
+  letter-spacing: 0.08em;
+  transition: color 0.2s;
+  /* transition: color 0.2s = color change animates over 0.2 seconds
+     instead of snapping instantly. Makes hover feel smoother.
+     Format: transition: property duration timing-function; */
+}
+.nav-links a:hover { color: var(--purple); }
+/* :hover = applies when mouse is over the element */
+
+/*
+  ═══════════════════════════════════════════════════════════════
+  THE STATUS BANNER
+  ═══════════════════════════════════════════════════════════════
+  The glowing bar that shows if requests are open or closed.
+
+  rgba(0,255,136,0.06) = the --green color but very transparent.
+  rgba(r, g, b, a) where a = alpha/opacity from 0 to 1.
+  0.06 = 6% opacity = barely-there tint. Just enough to tint.
+
+  WHEN REQUESTS ARE CLOSED, change this section to:
+  1. In <style>: change .status-banner background and border to red
+     .status-banner { background: rgba(255,79,79,0.06); border-bottom: 1px solid rgba(255,79,79,0.2); color: #ff4f4f; }
+     .status-dot { background: #ff4f4f; box-shadow: 0 0 8px #ff4f4f; }
+  2. In HTML: change the text to "REQUESTS CLOSED"
+
+  OR easier: just change the text in the HTML and it's obvious enough.
+  ═══════════════════════════════════════════════════════════════
+*/
+.status-banner {
+  background: rgba(0,255,136,0.06);
+  border-bottom: 1px solid rgba(0,255,136,0.2);
+  padding: 8px 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--green);
+  letter-spacing: 0.15em;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  /* border-radius: 50% on equal width/height = perfect circle */
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  /* box-shadow: offset-x offset-y blur-radius color
+     0 0 = centered (no offset)
+     8px = blur spread
+     same color as background = glowing effect */
+  animation: pulse 2s ease-in-out infinite;
+  /* animation: name duration timing-function iteration-count */
+}
+
+/*
+  KEYFRAME ANIMATION:
+  @keyframes defines what happens at different points in the animation.
+  0% = start, 100% = end. You can add steps in between like 50%.
+  ease-in-out = starts slow, speeds up, slows down at end.
+  infinite = loops forever.
+
+  This animation fades the dot from full opacity to 40% and back,
+  creating a "breathing" pulsing effect.
+
+  TO MAKE IT PULSE FASTER: change 2s to 1s
+  TO MAKE IT PULSE SLOWER: change 2s to 4s
+  TO REMOVE THE PULSE: delete the animation property from .status-dot
+*/
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/*
+  ═══════════════════════════════════════════════════════════════
+  THE HERO SECTION
+  ═══════════════════════════════════════════════════════════════
+  The big statement area at the top of the page.
+
+  position: relative is required here so that .hero::before
+  (the purple glow) can be positioned INSIDE .hero using
+  position: absolute. A child with position: absolute positions
+  itself relative to its nearest positioned ancestor.
+  If .hero didn't have position: relative, the ::before would
+  escape and position itself relative to the whole page.
+
+  RULE TO REMEMBER:
+  If you want an absolutely positioned child to stay inside a
+  parent, the parent needs position: relative (or fixed/sticky/absolute).
+  ═══════════════════════════════════════════════════════════════
+*/
+.hero {
+  text-align: center;
+  padding: 80px 40px 60px;
+  /* padding: top right/left bottom = 80px top, 40px sides, 60px bottom */
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(188,0,255,0.08), transparent 60%);
+  /*
+    radial-gradient(shape at position, color-stop1, color-stop2)
+    ellipse = oval shape (vs circle)
+    at 50% 0% = centered horizontally, at the very top
+    rgba(188,0,255,0.08) = very faint purple at the center
+    transparent 60% = fades to nothing by 60% of the way down
+    Creates a soft purple glow bleeding down from the top.
+
+    TO CHANGE THE GLOW COLOR: change rgba(188,0,255,0.08)
+    TO MAKE IT STRONGER: increase the 0.08 opacity
+    TO REMOVE IT: delete this entire .hero::before rule
+  */
+  pointer-events: none;
+}
+
+/*
+  clamp(minimum, preferred, maximum) = responsive value.
+  clamp(32px, 6vw, 64px) means:
+  - Never smaller than 32px
+  - Tries to be 6% of the viewport width
+  - Never larger than 64px
+  On a 1000px wide screen: 6vw = 60px (within range, so 60px)
+  On a 400px phone: 6vw = 24px (below minimum, so 32px)
+  On a 1200px screen: 6vw = 72px (above maximum, so 64px)
+  This is how you make text scale with screen size without media queries.
+*/
+.hero h1 {
+  font-family: var(--head);
+  font-size: clamp(32px, 6vw, 64px);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  color: #fff;
+  position: relative;
+  /* position: relative here so h1 sits above the ::before glow layer */
+}
+
+/*
+  ═══════════════════════════════════════════════════════════════
+  GRADIENT TEXT TRICK
+  ═══════════════════════════════════════════════════════════════
+  To make text show a gradient instead of a solid color:
+  1. Apply the gradient as a background on the text element
+  2. Clip the background to the text shape only
+  3. Make the text color transparent so the background shows through
+
+  background: linear-gradient(90deg, color1, color2)
+  90deg = left to right direction
+
+  -webkit-background-clip: text clips background to text shape.
+  background-clip: text is the standard version.
+  Include both for browser compatibility.
+
+  -webkit-text-fill-color: transparent makes text transparent.
+  color: transparent would also work but -webkit-text-fill-color
+  is more reliable for this specific trick.
+
+  TO CHANGE GRADIENT COLORS: edit the two colors in linear-gradient.
+  TO ADD MORE COLORS: linear-gradient(90deg, color1, color2, color3)
+  TO CHANGE DIRECTION: 0deg = bottom to top, 180deg = top to bottom,
+    45deg = diagonal
+  ═══════════════════════════════════════════════════════════════
+*/
+.hero h1 span {
+  background: linear-gradient(90deg, var(--purple), var(--pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero p {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 0.2em;
+  margin-top: 12px;
+  position: relative;
+}
+
+.hero-tags {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  /* flex-wrap: wrap = if tags overflow the line, they wrap to the next line
+     instead of overflowing outside the container */
+  gap: 8px;
+  margin-top: 24px;
+  position: relative;
+}
+
+/*
+  BASE TAG STYLE:
+  No background — just border and text.
+  This is called a "ghost" or "outline" style.
+
+  .tag.accent = selects elements that have BOTH class="tag" AND class="accent"
+  You write it as class="tag accent" in HTML (space separated)
+  In CSS you chain them with no space: .tag.accent
+*/
+.tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  color: var(--dim);
+}
+.tag.accent { border-color: var(--purple); color: var(--purple); }
+.tag.accent2 { border-color: var(--pink); color: var(--pink); }
+
+/*
+  TO ADD A NEW TAG VARIANT (e.g. cyan):
+  .tag.accent3 { border-color: var(--cyan); color: var(--cyan); }
+  Then in HTML: <span class="tag accent3">your tag</span>
+*/
+
+/*
+  ═══════════════════════════════════════════════════════════════
+  THE WRAPPER / CONTAINER
+  ═══════════════════════════════════════════════════════════════
+  A container limits how wide content gets on large screens.
+  Without it, text would stretch all the way across a 4K monitor
+  and become impossible to read.
+
+  max-width: 860px = content never gets wider than 860px.
+  margin: 0 auto = 0 top/bottom margin, auto left/right.
+  auto margin on both sides = centers the element horizontally.
+
+  This is the standard way to center a content column.
+
+  TO MAKE CONTENT WIDER: increase 860px
+  TO MAKE IT NARROWER: decrease it (600px is good for text-heavy content)
+
+  IF YOU WANT A FULL-WIDTH SECTION (like a banner) inside the wrapper:
+  Give it a negative margin: margin-left: -32px; margin-right: -32px;
+  to break out of the padding.
+  ═══════════════════════════════════════════════════════════════
+*/
+.wrapper {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 60px 32px 100px;
+}
+
+/*
+  ═══════════════════════════════════════════════════════════════
+  SECTIONS
+  ═══════════════════════════════════════════════════════════════
+  Each content block (What I Make, Rules, Form, Queue) is a .section.
+  margin-bottom: 64px creates breathing room between them.
+
+  The section-header is the "A. What I Make" title row.
+  It uses flexbox to put the letter and title side by side.
+
+  The letter colors are set using ID selectors:
+  #s-what .section-letter = inside the element with id="s-what",
+    target elements with class "section-letter"
+  This lets each section have its own letter color without
+  needing separate classes for each one.
+
+  ID selectors (#) target ONE specific element.
+  Class selectors (.) target ALL elements with that class.
+  ═══════════════════════════════════════════════════════════════
+*/
+.section { margin-bottom: 64px; }
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.section-letter {
+  font-family: var(--head);
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1;
+  /* line-height: 1 = exactly the font size, no extra space above/below.
+     Good for large text used as a decorative element. */
+}
+.section-title {
+  font-family: var(--head);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #e0e0e0;
+}
+
+#s-what .section-letter { color: var(--purple); }
+#s-rules .section-letter { color: var(--pink); }
+#s-form .section-letter { color: var(--cyan); }
+#s-queue .section-letter { color: #e0a800; }
+
+.section p { color: var(--dim); font-size: 14px; margin-bottom: 12px; }
+
+/*
+  ═══════════════════════════════════════════════════════════════
+  YES/NO GRID
+  ═══════════════════════════════════════════════════════════════
+  CSS Grid creates the two-column layout.
+
+  display: grid = activates grid layout on this element.
+  grid-template-columns: 1fr 1fr = two equal columns.
+  1fr = 1 "fraction unit" = 1 equal share of available space.
+  So 1fr 1fr = 50% 50%.
+
+  Other examples:
+  grid-template-columns: 2fr 1fr = 66% / 33% split
+  grid-template-columns: 300px 1fr = fixed 300px left, rest on right
+  grid-template-columns: repeat(3, 1fr) = three equal columns
+
+  IF YOU WANT THE YES/NO BOXES TO STACK ON MOBILE:
+  Add a media query:
+  @media (max-width: 600px) {
+    .yn-grid { grid-template-columns: 1fr; }
+  }
+  This switches to one column on screens narrower than 600px.
+
+  border-left: 3px = the thick colored accent line on the left edge.
+  The .yes box has green, .no has red. This is a common design
+  pattern to visually distinguish the two boxes quickly.
+  ═══════════════════════════════════════════════════════════════
+*/
+.yn-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 8px;
+}
+.yn-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 16px 20px;
+}
+.yn-box.yes { border-left: 3px solid var(--green); }
+.yn-box.no { border-left: 3px solid #ff4f4f; }
+.yn-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.yn-box.yes .yn-title { color: var(--green); }
+.yn-box.no .yn-title { color: #ff4f4f; }
+.yn-list {
+  list-style: none;
+  /* list-style: none removes the default bullet points (•)
+     We add our own custom symbols with ::before instead */
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.yn-list li {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--dim);
+  padding-left: 14px;
+  /* padding-left: 14px makes room for the ::before symbol */
+  position: relative;
+  /* position: relative lets ::before use position: absolute
+     to pin itself to the left edge of this li */
+  line-height: 1.5;
+}
+.yn-box.yes .yn-list li::before {
+  content: '+';
+  position: absolute;
+  left: 0;
+  color: var(--green);
+}
+.yn-box.no .yn-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: #ff4f4f;
+}
+/*
+  TO CHANGE THE SYMBOLS: edit the content: '+' and content: '—' values.
+  You can use any character, emoji, or even an arrow: content: '→';
+*/
+
+/*
+  ═══════════════════════════════════════════════════════════════
+  RULES LIST WITH AUTO-NUMBERING
+  ═══════════════════════════════════════════════════════════════
+  CSS counters let you auto-number elements without writing
+  the numbers in your HTML. Add or remove rules and the
+  numbers update automatically.
+
+  counter-reset: rule — creates a counter named "rule" starting at 0.
+  This goes on the PARENT element (.rules-list).
+
+  counter-increment: rule — adds 1 to the "rule" counter.
+  This goes on each CHILD element (.rules-list li).
+  Each li gets the next number.
+
+  content: counter(rule, decimal-leading-zero) — displays the number.
+  decimal-leading-zero = 01, 02, 03 format.
+  Just counter(rule) = 1, 2, 3 format.
+
+  padding-left: 44px makes room for the number on the left.
+  The ::before with position: absolute pins the number inside
+  that padding space.
+
+  TO ADD A RULE: just add another <li>Your rule here</li>
+  TO REMOVE A RULE: delete the <li> and the numbers recount.
+  ═══════════════════════════════════════════════════════════════
+*/
+.rules-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  counter-reset: rule;
+}
+.rules-list li {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--pink);
+  padding: 12px 16px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--dim);
+  line-height: 1.6;
+  counter-increment: rule;
+  position: relative;
+  padding-left: 44px;
+}
+.rules-list li::before {
+  content: counter(rule, decimal-leading-zero);
+  position: absolute;
+  left: 14px;
+  color: var(--pink);
+  font-size: 10px;
+  top: 14px;
+}
+
+/*
+  ═══════════════════════════════════════════════════════════════
+  THE FORM
+  ═══════════════════════════════════════════════════════════════
+  A form (<form>) is a container for input fields.
+  Each field is wrapped in a .form-group div along with its label.
+
+  display: flex + flex-direction: column stacks form groups
+  vertically. gap: 16px spaces them out.
+
+  FORM ELEMENTS:
+  <input> = single line text field
+  <textarea> = multi-line text field (resizable)
+  <select> = dropdown menu
+  <button type="submit"> = the submit button
+
+  The name="" attribute on each field is the KEY that gets sent
+  to Supabase. It MUST match the column name in your database.
+  If your column is called "requester_name", name="requester_name".
+
+  required = makes the field mandatory. Form won't submit without it.
+
+  placeholder="" = the hint text that shows before typing.
+  It disappears when the user starts typing.
+
+  resize: vertical on textarea = user can drag it taller but not wider.
+  resize: none = can't resize at all.
+  resize: both = can resize in any direction.
+
+  outline: none removes the default browser focus ring.
+  We replace it with our own focus style using :focus selector.
+
+  transition: border-color 0.2s = border color animates smoothly
+  when focus changes.
+
+  IF YOU WANT TO ADD A NEW FIELD:
+  Copy one of the existing .form-group blocks:
+  <div class="form-group">
+    <label>Your label here</label>
+    <input type="text" name="your_column_name" placeholder="hint text">
+  </div>
+  Then add a matching column in your Supabase table with the same name.
+  ═══════════════════════════════════════════════════════════════
+*/
+.request-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+.form-group input,
+.form-group textarea,
+.form-group select {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--cyan);
+  padding: 10px 14px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+  resize: vertical;
+  width: 100%;
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus { border-color: var(--purple); }
+.form-group textarea { min-height: 100px; }
+.form-group select option { background: var(--surface); }
+.form-note {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--dim);
+  margin-top: 2px;
+}
+.submit-btn {
+  background: none;
+  border: 1px solid var(--purple);
+  color: var(--purple);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 12px 32px;
+  cursor: pointer;
+  /* cursor: pointer = shows the hand cursor on hover.
+     Browsers don't automatically show hand cursor on <button> in all cases. */
+  transition: background 0.2s, color 0.2s;
+  align-self: flex-start;
+  /* align-self: flex-start = button only takes the width it needs.
+     Without this in a flex column, it would stretch full width. */
+  margin-top: 8px;
+}
+.submit-btn:hover { background: var(--purple); color: #000; }
+
+.form-success {
+  display: none;
+  /* display: none = completely hidden and takes up no space.
+     JavaScript changes this to display: block after form submits.
+     This is how you show/hide elements with JS. */
+  background: rgba(0,255,136,0.06);
+  border: 1px solid rgba(0,255,136,0.3);
+  padding: 16px 20px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--green);
+  line-height: 1.6;
+}
+
+/*
+  ═══════════════════════════════════════════════════════════════
+  THE QUEUE TABLE
+  ═══════════════════════════════════════════════════════════════
+  A <table> displays data in rows and columns.
+  border-collapse: collapse = removes double borders between cells.
+  Without it, each cell has its own border = gaps between them.
+
+  Status pills are <span> elements with different classes.
+  The class comes from the "status" value in your Supabase row.
+  When you change a status to "progress" in Supabase,
+  the pill automatically becomes cyan on the page.
+
+  TO UPDATE A REQUEST STATUS:
+  1. Go to supabase.com > your project > Table Editor > requests
+  2. Find the row, click the status cell
+  3. Change it to: pending / progress / done
+  4. Save — the page reflects it next time someone loads it.
+
+  TO ADD A SCROLL BOX TO THE QUEUE TABLE (if it gets long):
+  Wrap #queue-container in a div:
+  <div style="max-height: 400px; overflow-y: auto;">
+    <div id="queue-container"></div>
+  </div>
+  This creates a scrollable box 400px tall.
+  ═══════════════════════════════════════════════════════════════
+*/
+.queue-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 11px;
+}
+.queue-table th {
+  background: #161616;
+  color: var(--dim);
+  padding: 10px 14px;
+  text-align: left;
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid var(--border);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+.queue-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #1a1a1a;
+  color: var(--dim);
+}
+.queue-table tr:hover td { background: #121212; }
+.status-pill {
+  display: inline-block;
+  padding: 2px 10px;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.status-pill.pending { border: 1px solid var(--dim); color: var(--dim); }
+.status-pill.progress { border: 1px solid var(--cyan); color: var(--cyan); }
+.status-pill.done { border: 1px solid var(--green); color: var(--green); }
+.queue-empty {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--dim);
+  padding: 24px 0;
+  text-align: center;
+  letter-spacing: 0.1em;
+}
+
+/*
+  ═══════════════════════════════════════════════════════════════
+  FOOTER
+  ═══════════════════════════════════════════════════════════════
+  Simple centered footer with a top border line.
+  Nothing fancy here — just text and a link.
+
+  TO ADD MORE FOOTER LINKS:
+  <p>
+    made by <a href="...">@deamnfreak</a>
+    &nbsp;·&nbsp;
+    <a href="https://chub.ai">chub.ai</a>
+    &nbsp;·&nbsp;
+    <a href="your-guide-url">guide</a>
+  </p>
+  &nbsp; = a non-breaking space (wider than a regular space)
+  ═══════════════════════════════════════════════════════════════
+*/
+footer {
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #333;
+  padding: 40px 0 20px;
+  border-top: 1px solid var(--border);
+  letter-spacing: 0.06em;
+}
+footer a { color: #555; text-decoration: none; }
+footer a:hover { color: var(--purple); }
+</style>
+</head>
+<body>
+
+<!--
+  ═══════════════════════════════════════════════════════════════
+  HTML STRUCTURE STARTS HERE
+  ═══════════════════════════════════════════════════════════════
+  Everything visible on the page lives inside <body>.
+  The order elements appear in HTML = the order they appear on page.
+  CSS can reorder them visually with flexbox/grid order properties,
+  but the HTML source order is the default stacking.
+  ═══════════════════════════════════════════════════════════════
+-->
+
+<!--
+  NAV: the sticky top bar
+  href="#s-what" = when clicked, scrolls to the element with id="s-what"
+  These are called anchor links. The # means "find the id".
+  The id must match exactly: id="s-what" and href="#s-what"
+
+  TO ADD A NEW NAV LINK:
+  <a href="#your-section-id">Link Text</a>
+  Then add id="your-section-id" to the section it should scroll to.
+-->
+<nav>
+  <span class="nav-logo">// deamnfreak</span>
+  <div class="nav-links">
+    <a href="#s-what">What I Make</a>
+    <a href="#s-rules">Rules</a>
+    <a href="#s-form">Request</a>
+    <a href="#s-queue">Queue</a>
+  </div>
+</nav>
+
+<!--
+  STATUS BANNER:
+  UPDATE THIS MANUALLY when you open or close requests.
+  Change "REQUESTS OPEN" to "REQUESTS CLOSED"
+  Change "0/5 slots filled" to however many you've taken.
+  Also update the CSS colors (see comment in .status-banner above).
+-->
+<div class="status-banner">
+  <div class="status-dot"></div>
+  REQUESTS OPEN — 0/5 slots filled
+</div>
+
+<!--
+  HERO:
+  The <span> inside <h1> gets the gradient text.
+  You can put any words inside the span to make them gradient.
+  The words outside the span stay white.
+
+  TO CHANGE THE HEADING: edit "request a" and "bot card"
+  TO MAKE MORE WORDS GRADIENT: move them inside the <span>
+  TO MAKE NO GRADIENT: remove the <span> tags entirely
+-->
+<div class="hero">
+  <h1>request a <span>bot card</span></h1>
+  <p>// bot cards · lorebooks · dark content · 18+ only</p>
+  <!--
+    TAGS:
+    class="tag" = grey outline
+    class="tag accent" = purple outline
+    class="tag accent2" = pink outline
+    TO ADD A TAG: copy a <span> and change the text
+    TO REMOVE A TAG: delete the <span>
+  -->
+  <div class="hero-tags">
+    <span class="tag accent">dark content</span>
+    <span class="tag accent2">taboo</span>
+    <span class="tag">incest</span>
+    <span class="tag">noncon · cnc</span>
+    <span class="tag">original chars</span>
+    <span class="tag accent">lorebooks</span>
+  </div>
+</div>
+
+<!--
+  WRAPPER: centers and limits width of all content below.
+  Everything that should be in the main content area goes inside here.
+-->
+<div class="wrapper">
+
+  <!--
+    SECTION A: WHAT I MAKE
+    id="s-what" = the nav link target
+
+    .yn-grid creates the two-column layout.
+    .yn-box.yes = green left border (will-do list)
+    .yn-box.no = red left border (won't-do list)
+
+    TO ADD AN ITEM: <li>Your item here</li>
+    TO REMOVE AN ITEM: delete the <li>...</li>
+    TO ADD A THIRD COLUMN (e.g. "maybe"):
+    1. Add .yn-box.maybe { border-left: 3px solid var(--cyan); } in CSS
+    2. Change grid-template-columns to: 1fr 1fr 1fr in .yn-grid
+    3. Add the HTML box like the yes/no ones with class="yn-box maybe"
+  -->
+  <div class="section" id="s-what">
+    <div class="section-header">
+      <span class="section-letter">A.</span>
+      <span class="section-title">What I Make</span>
+    </div>
+    <p>Here's what I will and won't write. Read before requesting.</p>
+    <div class="yn-grid">
+      <div class="yn-box yes">
+        <div class="yn-title">✓ Will Do</div>
+        <ul class="yn-list">
+          <!-- EDIT THESE WITH YOUR ACTUAL YES LIST -->
+          <li>Original characters</li>
+          <li>Dark / taboo dynamics</li>
+          <li>Incest, stepfamily</li>
+          <li>Noncon / CNC</li>
+          <li>DILF / older male</li>
+          <li>Dominant female</li>
+          <li>Lorebooks (intimacy, NPC)</li>
+          <li>OC based on your idea</li>
+        </ul>
+      </div>
+      <div class="yn-box no">
+        <div class="yn-title">✗ Won't Do</div>
+        <ul class="yn-list">
+          <!-- EDIT THESE WITH YOUR ACTUAL NO LIST -->
+          <li>Minors in any context</li>
+          <li>Real people / celebrities</li>
+          <li>Fanfic of existing IP</li>
+          <li>Pure fluff / no edge</li>
+          <li>Rushed requests</li>
+          <li>Extremely long cards</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!--
+    SECTION B: RULES
+    Each <li> is one rule. The numbers are auto-generated by CSS.
+    You never type the numbers — just add or remove <li> items.
+
+    TO ADD A RULE: <li>Your new rule text here.</li>
+    TO REMOVE A RULE: delete the entire <li>...</li>
+    The remaining rules will automatically renumber.
+
+    TO CHANGE THE RULE STYLE (e.g. remove the number):
+    Delete the counter-increment and ::before rules from .rules-list li in CSS.
+    Add list-style: disc to .rules-list to get regular bullet points back.
+  -->
+  <div class="section" id="s-rules">
+    <div class="section-header">
+      <span class="section-letter">B.</span>
+      <span class="section-title">Rules</span>
+    </div>
+    <ul class="rules-list">
+      <!-- EDIT THESE WITH YOUR ACTUAL RULES -->
+      <li>All characters must be 18+. No exceptions. If your request implies a minor I will decline it.</li>
+      <li>Be specific. Vague requests get vague results. The more detail you give me the better the card will be.</li>
+      <li>I write at my own pace. Do not rush me or ask for updates constantly.</li>
+      <li>I reserve the right to decline any request for any reason, no explanation required.</li>
+      <li>Once I start writing your card I won't take major rewrites. Minor tweaks are okay.</li>
+      <li>Credit me if you post the card publicly — deamnfreak on chub.ai.</li>
+    </ul>
+  </div>
+
+  <!--
+    SECTION C: THE REQUEST FORM
+    <form id="req-form"> the id is what JavaScript uses to find this form.
+    If you change the id, update it in the JS too.
+
+    EACH FIELD EXPLAINED:
+    <input type="text"> = single line text box
+    <input type="email"> = single line, validates email format
+    <textarea> = multi-line text box
+    <select> = dropdown menu
+
+    name="" MUST match your Supabase column name EXACTLY.
+    Case sensitive: "requester_name" ≠ "Requester_Name"
+
+    required = field must be filled before form submits.
+    Remove it to make a field optional.
+
+    TO ADD A NEW FIELD:
+    1. Add a column in Supabase with the name you want
+    2. Add the HTML field here with name="that_column_name"
+    Example — adding a "reference" field:
+    Supabase: add column called "reference" (text type)
+    HTML:
+    <div class="form-group">
+      <label>Reference / Inspiration</label>
+      <input type="text" name="reference" placeholder="any images or refs?">
+    </div>
+
+    TO ADD A SCROLLBOX TO A TEXTAREA:
+    Add style="max-height: 200px; overflow-y: auto;" to the textarea.
+    This caps its height and adds scroll if content overflows.
+  -->
+  <div class="section" id="s-form">
+    <div class="section-header">
+      <span class="section-letter">C.</span>
+      <span class="section-title">Submit a Request</span>
+    </div>
+    <p>Fill this out fully. Incomplete requests will be skipped.</p>
+    <form class="request-form" id="req-form">
+
+      <div class="form-group">
+        <label>Your username (chub / janitor)</label>
+        <input type="text" name="requester_name" placeholder="@username" required>
+      </div>
+
+      <!--
+        DROPDOWN (<select>):
+        The first <option value=""> is the placeholder — shows by default.
+        value="" = empty value, required field won't accept it = forces a real choice.
+        Each <option value="X"> sends X to Supabase when selected.
+        The text between the tags is what the user sees in the dropdown.
+
+        TO ADD A NEW OPTION:
+        <option value="preset">Preset</option>
+        TO REMOVE AN OPTION: delete the <option> line.
+      -->
+      <div class="form-group">
+        <label>Request type</label>
+        <select name="type" required>
+          <option value="">— select —</option>
+          <option value="bot-card">Bot Card</option>
+          <option value="lorebook">Lorebook</option>
+          <option value="both">Bot Card + Lorebook</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Character concept</label>
+        <textarea name="concept" placeholder="Who is this character? Their role, dynamic, personality..." required></textarea>
+        <span class="form-note">// be as detailed as possible</span>
+        <!--
+          .form-note = the small helper text under a field.
+          Add one of these under any field that needs extra explanation.
+        -->
+      </div>
+
+      <div class="form-group">
+        <label>Dynamic / scenario</label>
+        <textarea name="dynamic" placeholder="What's the relationship dynamic? What scenario do you want?"></textarea>
+        <!-- no "required" here = this field is optional -->
+      </div>
+
+      <div class="form-group">
+        <label>Additional notes</label>
+        <textarea name="notes" placeholder="Anything else I should know..."></textarea>
+      </div>
+
+      <!--
+        CONTACT FIELD: required so you can actually reach them.
+        This is how you close the loop — when their request is done
+        you message them at whatever they put here.
+      -->
+      <div class="form-group">
+        <label>Contact (discord or email)</label>
+        <input type="text" name="contact" placeholder="discord: user#0000 or email@example.com" required>
+        <span class="form-note">// how I'll reach you when your request is done</span>
+      </div>
+
+      <button type="submit" class="submit-btn">Submit Request →</button>
+    </form>
+
+    <!--
+      SUCCESS MESSAGE: hidden until form submits.
+      display: none in CSS hides it completely.
+      JavaScript shows it and fills in the #req-id span
+      with the auto-generated ID number from Supabase.
+
+      DO NOT REMOVE id="form-success" or id="req-id" —
+      the JavaScript needs these to work.
+    -->
+    <div class="form-success" id="form-success">
+      ✓ Request received — your request ID is <strong id="req-id" style="color:var(--purple)"></strong><br>
+      <span style="color:var(--dim);font-size:10px;">Use Ctrl+F and search your ID in the queue below to track your spot.</span>
+    </div>
+  </div>
+
+  <!--
+    SECTION D: QUEUE
+    You do NOT edit the HTML inside #queue-container.
+    JavaScript builds the table automatically from your Supabase data.
+
+    TO UPDATE A REQUEST STATUS:
+    1. Go to supabase.com
+    2. Your project > Table Editor > requests table
+    3. Find the row (by username or ID)
+    4. Click the "status" cell
+    5. Change it to one of: pending / progress / done
+    6. The status pill color on the page updates automatically
+
+    TO ADD A SCROLLBOX TO THE QUEUE (when it gets long):
+    Change this:
+    <div id="queue-container">
+    To this:
+    <div id="queue-container" style="max-height:500px;overflow-y:auto;">
+  -->
+  <div class="section" id="s-queue">
+    <div class="section-header">
+      <span class="section-letter">D.</span>
+      <span class="section-title">Queue</span>
+    </div>
+    <p>Current request queue. Updates as I work through submissions. Use Ctrl+F to search your request ID or username.</p>
+    <div id="queue-container">
+      <!-- JavaScript fills this automatically -->
+    </div>
+  </div>
+
+  <!--
+    FOOTER:
+    &nbsp; = non-breaking space (a wider space character)
+    · = a middle dot character (option+8 on Mac, or just copy it)
+
+    TO ADD MORE LINKS:
+    <a href="url">link text</a> &nbsp;·&nbsp; <a href="url">link text</a>
+  -->
+  <footer>
+    <p>made by <a href="https://chub.ai/users/deamnfreak">@deamnfreak</a> &nbsp;·&nbsp; chub.ai &nbsp;·&nbsp; do not repost bots without credit</p>
+  </footer>
+
+</div><!-- end .wrapper -->
+
+
+<script>
+/*
+  ═══════════════════════════════════════════════════════════════
+  JAVASCRIPT
+  ═══════════════════════════════════════════════════════════════
+  JavaScript makes the page DO things.
+  This script handles three things:
+  1. Connecting to Supabase (your database)
+  2. Sending form data to Supabase when submitted
+  3. Loading and displaying the queue table from Supabase
+
+  YOU ONLY NEED TO CHANGE THE TWO LINES BELOW.
+  Everything else runs automatically.
+
+  WHERE TO FIND YOUR KEYS:
+  SUPABASE_URL: Supabase > Settings > Data API > Project URL
+  SUPABASE_KEY: Supabase > Settings > API > Publishable key
+  ═══════════════════════════════════════════════════════════════
+*/
+const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+const SUPABASE_KEY = 'YOUR_SUPABASE_PUBLISHABLE_KEY';
+
+/*
+  FORM SUBMIT HANDLER:
+  document.getElementById('req-form') finds the form by its id.
+  .addEventListener('submit', function(e) { ... }) runs code when submitted.
+
+  e.preventDefault() stops the browser's default form behavior.
+  Default behavior = refresh the page on submit. We don't want that.
+  We want to handle it ourselves with fetch().
+
+  new FormData(this) collects all the field values.
+  "this" refers to the form element itself.
+  Object.fromEntries() converts it to a plain object: { name: value, ... }
+
+  fetch() sends an HTTP request to Supabase's REST API.
+  method: 'POST' = creating new data (not reading or updating).
+  headers tell Supabase who we are and what format we're sending.
+  body: JSON.stringify(data) converts our object to JSON text.
+
+  'Prefer': 'return=representation' tells Supabase to send back
+  the newly created row in the response, including the auto-generated ID.
+
+  if (res.ok) = if the request succeeded (status 200-299).
+  result[0]?.id = the id of the first (and only) returned row.
+  The ?. is optional chaining — if result[0] is undefined, return
+  undefined instead of throwing an error.
+
+  String(id).padStart(4, '0') = format the number:
+  padStart(4, '0') = pad with zeros until 4 characters long.
+  1 → '0001', 23 → '0023', 100 → '0100'
+*/
+document.getElementById('req-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(this));
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/requests`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Prefer': 'return=representation'
+    },
+    body: JSON.stringify(data)
+  });
+  if (res.ok) {
+    const result = await res.json();
+    const id = result[0]?.id;
+    this.style.display = 'none'; /* hides the form */
+    document.getElementById('form-success').style.display = 'block'; /* shows success message */
+    document.getElementById('req-id').textContent = '#' + String(id).padStart(4, '0');
+    loadQueue(); /* refreshes the queue table so new entry appears */
+  }
+});
+
+/*
+  LOAD QUEUE FUNCTION:
+  This runs on page load AND after each form submission.
+  It fetches all rows from the requests table and builds the HTML table.
+
+  The URL parameters after the ? are query options:
+  select=id,requester_name,type,status = only fetch these columns
+  (we don't fetch "contact" or "concept" — private info)
+  order=id.asc = sort by id, ascending (oldest first)
+
+  if (!rows.length) = if there are no rows (empty array), show the empty message.
+  rows.map() = loop through every row and create a <tr> for each one.
+  .join('') = combine all the <tr> strings into one string.
+
+  r.status gives us the status value ('pending', 'progress', or 'done').
+  We use it as BOTH the CSS class AND the displayed text:
+  class="status-pill ${r.status}" applies the right color.
+  The text inside the span also shows the status word.
+
+  async/await = JavaScript for handling operations that take time
+  (like fetching data from the internet). await pauses execution
+  until the fetch completes, then continues.
+*/
+async function loadQueue() {
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/requests?select=id,requester_name,type,status&order=id.asc`,
+    { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+  );
+  const rows = await res.json();
+  const container = document.getElementById('queue-container');
+  if (!rows.length) {
+    container.innerHTML = '<div class="queue-empty">// queue is empty — be the first to request</div>';
+    return;
+  }
+  container.innerHTML = `
+    <table class="queue-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Username</th>
+          <th>Type</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map((r) => `
+          <tr>
+            <td>#${String(r.id).padStart(4,'0')}</td>
+            <td>${r.requester_name || '—'}</td>
+            <td>${r.type || '—'}</td>
+            <td><span class="status-pill ${r.status}">${r.status}</span></td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>`;
+}
+
+/* runs immediately when page loads to show the current queue */
+loadQueue();
+</script>
+
+</body>
+</html>
